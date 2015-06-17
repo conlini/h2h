@@ -14,4 +14,7 @@ def ingest_bulk(data):
             else :
                 param_property = properties[param_name]
             add_value_to_property(param_value, param_property)
-            ItemParam(param_name=param_name, param_value=param_value, param_property=param_property, item=item).save()
+            ip = ItemParam(param_name=param_name, param_value=param_value, param_property=param_property, item=item)
+            if param_property.property_type == "INT" :
+                ip.param_value_as_int = int(param_value)
+            ip.save()

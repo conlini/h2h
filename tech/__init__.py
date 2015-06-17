@@ -8,10 +8,12 @@ import sys
 property_vals = defaultdict(list)
 properties = {}
 
-for param_property in ParamProperty.objects.all():
-    properties[param_property.param_name] = param_property
-    for vals in param_property.paramvalue_set.all():
-        property_vals[param_property.param_name].append(vals.param_value)
+def load():
+    print "pre-loading data"
+    for param_property in ParamProperty.objects.all():
+        properties[param_property.param_name] = param_property
+        for vals in param_property.paramvalue_set.all():
+            property_vals[param_property.param_name].append(vals.param_value)
 
 
 def add_value_to_property(value, property_name):

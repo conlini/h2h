@@ -11,6 +11,11 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
+from tech import load
+
+# hack to load the DB cache. i can't think of a better way to do this for now
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "h2h.settings")
+load()
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "h2h.settings")
 
 application = get_wsgi_application()

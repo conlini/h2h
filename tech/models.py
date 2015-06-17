@@ -19,5 +19,6 @@ class Item(models.Model):
 class ItemParam(models.Model):
     param_name = models.CharField(max_length=50, null=False, blank=False)
     param_value = models.CharField(max_length=100, null=False, blank=False)
+    param_value_as_int = models.IntegerField(null=True, blank=True)
     item = models.ForeignKey(Item)
     param_property = models.ForeignKey(ParamProperty)
