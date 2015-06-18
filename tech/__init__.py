@@ -2,6 +2,7 @@ from collections import defaultdict
 
 from models import *
 import sys
+from request_handler import *
 
 # load all the current ParamProperty and ParamValues in to memory
 
@@ -43,21 +44,3 @@ def create_property_for_value(property_name, value):
     return property
 
 
-def get_filters_and_ranges():
-    filters = defaultdict(list)
-    for name, param_property in properties.iteritems():
-        for val in property_vals[name]:
-
-            if param_property.property_type is "INT":
-                # this should just have 2 values, min and max
-                if name in filters:
-                    if int(val) > filters[name][1]:
-                        filters[name][1] = int(val)
-                    if int(val) < filters[name][0]:
-                        filters[name][0] = int(val)
-                else:
-                    filters[name].append(sys.maxint, -1)
-            elif param_property.property_type is "BOOL":
-                filters[name].append(True, False)
-            else:
-                filters[name]

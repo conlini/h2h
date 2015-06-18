@@ -16,8 +16,11 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from tech.views import *
+from tech.rest_points import *
 
 urlpatterns = [
     url(r'^$', home),
     url(r'search/$', query),
+    url(r'rest/filters/$', get_filters),
+    url(r'rest/search/$', search),
 ]
