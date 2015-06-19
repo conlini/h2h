@@ -1,6 +1,7 @@
 # h2h
 to setup
-1. Install python 2.7
+--------
+1.  Install python 2.7
 2. install pip
 3. install virtualenv
 4. virtualenv env
@@ -24,6 +25,7 @@ To generate new sample data -
 
 
 To Run
+------
 1. source env/bin/activate
 2. python manage.py runserver [host or port:host]
 
