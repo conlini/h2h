@@ -2,6 +2,8 @@ from django.core import serializers
 from django.http import HttpResponse
 from tech import *
 import json
+from django.views.decorators.csrf import csrf_protect
+
 
 mimetype_json = "application/json"
 serialize_type = "json"
@@ -12,7 +14,9 @@ def get_filters(request):
 
 
 def search(request):
-    post = request.POST
-    query = post['query']
-    result = json.dumps(handle_query_request(query))
+    post = request.body
+    print post
+    query = json.loads(post)
+    print query
+    result = json.dumps(handle_query_request(query['query']))
     return HttpResponse(result)

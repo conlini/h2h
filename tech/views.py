@@ -10,6 +10,7 @@ def home(request):
 
 
 def query(request):
+    print "query me"
     post = request.POST
     query = post['query']
     '''
