@@ -1,1 +1,0 @@
-# {"name" : "", "description" : "", "properties" : [{"prop_name" : "" , "prop_value" : ""}]}

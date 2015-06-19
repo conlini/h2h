@@ -15,6 +15,9 @@ class Item(models.Model):
     name = models.CharField(max_length=100, null=False, blank=False)
     description = models.CharField(max_length=1000, null=True, blank=True)
 
+    def __repr__(self):
+        return self.name," ", self.description
+
 
 class ItemParam(models.Model):
     param_name = models.CharField(max_length=50, null=False, blank=False)

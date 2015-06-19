@@ -9,6 +9,9 @@ from request_handler import *
 property_vals = defaultdict(list)
 properties = {}
 
+def get_properties():
+    return properties
+
 def load():
     print "pre-loading data"
     for param_property in ParamProperty.objects.all():
@@ -17,9 +20,9 @@ def load():
             property_vals[param_property.param_name].append(vals.param_value)
 
 
-def add_value_to_property(value, property_name):
-    ParamValue(param_property=properties[property_name], param_value=value).save()
-    property_vals[property_name].append(value)
+def add_value_to_property(value, param_property):
+    ParamValue(param_property=param_property, param_value=value).save()
+    property_vals[param_property.param_name].append(value)
 
 
 def property_has_value(property_name, value):
@@ -27,11 +30,12 @@ def property_has_value(property_name, value):
 
 
 def _get_best_type_for_property(value):
-    if type(value) is bool or value.lower() in ["y", "n", "yes", "no", "true", "false"]:
+    uval = value.encode('utf-8')
+    if type(uval) is bool or uval.lower() in ["y", "n", "yes", "no", "true", "false"]:
         return "BOOL"
-    elif type(value) is int:
+    elif uval.isdigit():
         return "INT"
-    elif type(value) is str:
+    elif type(uval) is str:
         return "STRING"
     else:
         raise RuntimeError
@@ -39,7 +43,7 @@ def _get_best_type_for_property(value):
 
 def create_property_for_value(property_name, value):
     type = _get_best_type_for_property(value)
-    property = ParamProperty(property_type=type, property_name=property_name)
+    property = ParamProperty(param_type=type, param_name=property_name)
     property.save()
     return property
 

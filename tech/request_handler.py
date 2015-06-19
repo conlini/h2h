@@ -1,6 +1,7 @@
 from tech import *
 from django.db.models import Q
 from collections import defaultdict
+import tech
 
 
 def handle_query_request(query):
@@ -15,7 +16,7 @@ def handle_query_request(query):
     compiledQueries = []
     for filter in query:
         for k, v in filter.iteritems():
-            param_property = properties[k]
+            param_property = tech.properties[k]
             if param_property.property_type == "INT":
                 range_key = "itemparam_param_value_as_int__range"
                 compiledQueries.append(Q(itemparam_param_name=k) & Q(range_key=v))
@@ -50,10 +51,10 @@ def handle_query_request(query):
 
 def get_filters_and_ranges():
     filters = defaultdict(list)
-    for name, param_property in properties.iteritems():
-        for val in property_vals[name]:
+    for name, param_property in tech.properties.iteritems():
+        for val in tech.property_vals[name]:
 
-            if param_property.property_type is "INT":
+            if param_property.param_type is "INT":
                 # this should just have 2 values, min and max
                 if name in filters:
                     if int(val) > filters[name][1]:
@@ -62,7 +63,8 @@ def get_filters_and_ranges():
                         filters[name][0] = int(val)
                 else:
                     filters[name].append(sys.maxint, -1)
-            elif param_property.property_type is "BOOL":
+            elif param_property.param_type is "BOOL":
                 filters[name].append(True, False)
             else:
                 filters[name]
+    return filters

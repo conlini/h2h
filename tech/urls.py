@@ -24,3 +24,6 @@ urlpatterns = [
     url(r'rest/filters/$', get_filters),
     url(r'rest/search/$', search),
 ]
+
+from tech import *
+load()
