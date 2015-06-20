@@ -5,6 +5,16 @@
     <meta charset="UTF-8">
     <title>H2H</title>
     <link type="text/css" href="{% static 'tech/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <script src="{% static 'tech/jquery-2.1.4.min.js' %}"></script>
+    <script src="{% static 'tech/angular.min.js' %}"></script>
+    <script>
+        $().ready(function(){
+            $.get("/tech/rest/filters", function(data) {
+                $("#dummy").innerHTML = data
+                alert(data)
+            })
+        })
+    </script>
 </head>
 <body>
 <nav class="navbar navbar-default">
@@ -18,16 +28,7 @@
     </div>
 </nav>
 <div class="container">
-    {% for k,v in filters.iteritems %}
-        <div class="row">
-            {% if v and True in v %}
-                <div class="btn-group" data-toggle="buttons">
-                    <label><input type="radio" name="id_unique">{{ k }}</label>
-                </div>
-            {% endif %}
-        </div>
-
-    {% endfor %}
+   <p id="dummy"></p>
 </div>
 </body>
 </html>

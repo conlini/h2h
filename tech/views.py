@@ -6,7 +6,7 @@ from tech import *
 # Create your views here.
 
 def home(request):
-    return render(request, "tech/home.html", {"filters": get_filters_and_ranges()})
+    return render(request, "tech/home.html")
 
 
 def query(request):
