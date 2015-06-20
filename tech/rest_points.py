@@ -15,8 +15,6 @@ def get_filters(request):
 
 def search(request):
     post = request.body
-    print post
     query = json.loads(post)
-    print query
     result = json.dumps(handle_query_request(query['query']))
     return HttpResponse(result)

@@ -17,18 +17,20 @@ def handle_query_request(query):
     for filter in query:
         for k, v in filter.iteritems():
             param_property = tech.properties[k]
-            if param_property.property_type == "INT":
+            param_type = param_property.param_type.encode("utf-8")
+            if param_type == "INT":
                 range_key = "itemparam_param_value_as_int__range"
-                compiledQueries.append(Q(itemparam_param_name=k) & Q(range_key=v))
-            elif param_property.property_type == "BOOL":
-                compiledQueries.append(Q(itemparam_param_name=k) & Q(itemparam_param_value=v[0]))
+                compiledQueries.append(Q(itemparam__param_name=k) & Q( itemparam__param_value_as_int__range=v))
+            elif param_type == "BOOL":
+                compiledQueries.append(Q(itemparam__param_name=k) & Q(itemparam__param_value=v[0]))
             else:
                 if v:
                     contains_key = "itemparam_param_value__icontains"
                     for val in v:
-                        compiledQueries.append(Q(itemparam_param_name=k) & Q(contains_key=val))
+                        compiledQueries.append(Q(itemparam__param_name=k) & Q(itemparam__param_value__icontains=val))
     result = None
     if compiledQueries:
+        print compiledQueries
         first_run = True
         final = None
         for compiledQuery in compiledQueries:
@@ -36,13 +38,14 @@ def handle_query_request(query):
                 final = compiledQuery
                 first_run = False
             else:
-                final |= compiledQuery
-        db_out = Item.objects.get(final)
+                final &= compiledQuery
+        print final
+        db_out = Item.objects.filter(final)
         result = []
         for item in db_out:
             this_item = {"name": item.name, "description": item.description}
             this_item_params = []
-            for item_param in item.objects.itemparam_set.all():
+            for item_param in item.itemparam_set.all():
                 this_item_params.append({"param_name": item_param.param_name, "param_value": item_param.param_value})
             this_item["parameters"] = this_item_params
             result.append(this_item)
