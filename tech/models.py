@@ -25,3 +25,6 @@ class ItemParam(models.Model):
     param_value_as_int = models.IntegerField(null=True, blank=True)
     item = models.ForeignKey(Item)
     param_property = models.ForeignKey(ParamProperty)
+
+    def __repr__(self):
+        return "ItemParam: name = " + self.param_name + " value =" + self.param_value

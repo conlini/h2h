@@ -8,21 +8,26 @@ from request_handler import *
 
 property_vals = defaultdict(list)
 properties = {}
+loaded = False
 
 def get_properties():
     return properties
 
 def load():
-    print "pre-loading data"
-    for param_property in ParamProperty.objects.all():
-        properties[param_property.param_name] = param_property
-        for vals in param_property.paramvalue_set.all():
-            property_vals[param_property.param_name].append(vals.param_value)
+    global loaded
+    if not loaded:
+        print "pre-loading data"
+        for param_property in ParamProperty.objects.all():
+            properties[param_property.param_name.encode("utf-8")] = param_property
+            for vals in param_property.paramvalue_set.all():
+                property_vals[param_property.param_name.encode("utf-8")].append(vals.param_value.encode("utf-8"))
+        loaded = True
 
 
 def add_value_to_property(value, param_property):
-    ParamValue(param_property=param_property, param_value=value).save()
-    property_vals[param_property.param_name].append(value)
+    if not value in property_vals[param_property.param_name]:
+        ParamValue(param_property=param_property, param_value=value).save()
+        property_vals[param_property.param_name].append(value)
 
 
 def property_has_value(property_name, value):
@@ -48,3 +53,7 @@ def create_property_for_value(property_name, value):
     return property
 
 
+def find_item_param(item, param_name):
+    for ip in item.itemparam_set.all():
+        if ip.param_name == param_name:
+            return ip

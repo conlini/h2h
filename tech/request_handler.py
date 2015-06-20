@@ -54,7 +54,8 @@ def get_filters_and_ranges():
     for name, param_property in tech.properties.iteritems():
         for val in tech.property_vals[name]:
 
-            if param_property.param_type is "INT":
+            param_type = param_property.param_type.encode("utf-8")
+            if param_type == "INT":
                 # this should just have 2 values, min and max
                 if name in filters:
                     if int(val) > filters[name][1]:
@@ -62,9 +63,9 @@ def get_filters_and_ranges():
                     if int(val) < filters[name][0]:
                         filters[name][0] = int(val)
                 else:
-                    filters[name].append(sys.maxint, -1)
-            elif param_property.param_type is "BOOL":
-                filters[name].append(True, False)
+                    filters[name].extend([sys.maxint, -1])
+            elif param_type == "BOOL":
+                filters[name] = [True, False]
             else:
                 filters[name]
     return filters
