@@ -38,7 +38,7 @@ def handle_query_request(query):
                 final = compiledQuery
                 first_run = False
             else:
-                final &= compiledQuery
+                final |= compiledQuery
         print final
         db_out = Item.objects.filter(final)
         result = []
