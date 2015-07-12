@@ -10,8 +10,8 @@
     <script>
         $().ready(function(){
             $.get("/tech/rest/filters", function(data) {
-                $("#dummy").innerHTML = data
-                alert(data)
+                $("p")[0].innerHTML = JSON.stringify(data)
+                alert(JSON.stringify(data))
             })
         })
     </script>

@@ -18,3 +18,8 @@ def search(request):
     query = json.loads(post)
     result = json.dumps(handle_query_request(query['query']))
     return HttpResponse(result, content_type=mimetype_json)
+
+
+def get_categories(request):
+    categories = json.dumps(get_all_categories())
+    return HttpResponse(categories, content_type=mimetype_json)

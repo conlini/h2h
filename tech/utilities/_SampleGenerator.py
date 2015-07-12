@@ -6,7 +6,7 @@ from faker.providers import BaseProvider
 
 
 class TechDataProvider(BaseProvider):
-    base = '"name" : "{{att_name}}", "properties" : '
+    base = '"name" : "{{att_name}}", "category" : "{{ cat_name }}" "properties" : '
 
     # bunch of pattersn for the Item properties. These are randomly chosed per item
     property_patterns = ['{"prop_name" : "{{prop_name_number}}" , "prop_value" :  "{{prop_value_number}}"}',
@@ -18,7 +18,7 @@ class TechDataProvider(BaseProvider):
 
     # Attribute/Item names.
     att_names = ["cassandra", "mongo", "elasticsearch", "lucene", "hibernate", "gigaspace", "storm", "oracle", "python",
-                 "java", "ruby"]
+                 "java", "ruby", "spring", "scala", "mysql", "postgresql", "couchbase", "hadoop", "ELK", "splunk"]
 
     # A set of properties for techs that have number based values. Values are a random generated number
     prop_name_numbers = ["write speed", "read speed", "released"]
@@ -30,7 +30,9 @@ class TechDataProvider(BaseProvider):
     # A set of properties for tech that are strings. The _value_simples are the set of values that can be chosen
     prop_name_simples = ["type", ]
     # Values that can be permuted against the prop_name_simples
-    prop_value_simples = ["db", "search", "programming language", "cloud infra", "in-memory solution"]
+    prop_value_simples = ["db", "search", "programming language", "cloud infra", "in-memory solution", "log analysis"]
+
+    cat_names = ["cat1", "cat2", "cat3"]
 
 
 
@@ -73,6 +75,10 @@ class TechDataProvider(BaseProvider):
     def prop_value_flag(cls):
         return cls.random_element(cls.prop_value_flags)
 
+    @classmethod
+    def cat_name(cls):
+        return cls.random_element(cls.cat_names)
+
     # for each loop generate a pattern by created a random number of propertes for each Item. These will then be parsed
     # by the generator and use the values in arrays above to randomly create sample data
     def generate_pattern(self):
@@ -87,5 +93,5 @@ if __name__ == "__main__":
     fake.add_provider(TechDataProvider)
     # fake.seed(1234)
     # create 10 items, increase for more
-    for _ in range(10):
+    for _ in range(15):
         print fake.tech_data()

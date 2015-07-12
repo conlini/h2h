@@ -71,4 +71,14 @@ def get_filters_and_ranges():
                 filters[name] = [True, False]
             else:
                 filters[name]
-    return filters
+    return {"filters" : filters}
+
+
+def get_all_categories():
+    answer = {}
+    cats = []
+    answer['categories'] = cats
+    for cat in Category.objects.all():
+        cats.append({"id" : cat.id, "name" : cat.category_name})
+    return answer
+
