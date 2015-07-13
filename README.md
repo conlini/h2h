@@ -30,13 +30,22 @@ To Run
 2. python manage.py runserver [host or port:host]
 
 urls
-http://localhost:port/tech/rest/filters ---> this should give you available filters based on data !!! Does not work correctly
-http://localhost:port/tech/rest/query POST with payload as  ---> Test in progress
+http://localhost:port/tech/rest/filters
+http://localhost:port/tech/rest/query POST with payload as 
         {
-            "query" : [{"att_name" : []"}]
+            "query" : [{"att_name" : "[]"}]
 
         }
-        where each att_name object follows the following standard
-        att_name : [0, 100] Ranges
-        att_name : [key1, key2 , key3] for textual
-        att_name : [True/False] for Boolean
+        
+each att_name object follows the following standard
+att_name : [0, 100] Ranges
+att_name : [key1, key2 , key3] for textual
+att_name : [True/False] for Boolean
+        
+sample 
+{
+        "query" : [
+                {"write speed" : [0, 10000]},
+                {"type" : ["search"]}
+                ]
+}
