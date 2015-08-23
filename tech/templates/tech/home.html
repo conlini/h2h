@@ -1,6 +1,6 @@
-<!DOCTYPE html>
-{% load static %}
+<!DOCTYPE html> {% load static %}
 <html>
+
 <head lang="en">
     <meta charset="UTF-8">
     <title>H2H</title>
@@ -8,27 +8,42 @@
     <script src="{% static 'tech/jquery-2.1.4.min.js' %}"></script>
     <script src="{% static 'tech/angular.min.js' %}"></script>
     <script>
-        $().ready(function(){
-            $.get("/tech/rest/filters", function(data) {
-                $("p")[0].innerHTML = JSON.stringify(data)
-                alert(JSON.stringify(data))
-            })
-        })
+        tech_filters = {}
+        // $(document).ready(function() {
+        //     $.get('rest/filters', function(json, textStatus) {
+        //             tech_filters = json;
+        //     });
+        // });
+        var mymodule = angular.module('myapp', []).config(function($interpolateProvider){
+            $interpolateProvider.startSymbol("{$");
+            $interpolateProvider.endSymbol("$}")
+        });
+        mymodule.controller('myController', ["$scope" , "$http", function($scope, $http){
+                $http.get("rest/filters").success(function(data){
+                    $scope.filters = data.filters;
+                })
+        }])
     </script>
 </head>
-<body>
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-2">
-                <div class="navbar-header"></div>
-                <h4>H2H</h4>
+
+<body ng-app="myapp">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-2">
+                    <div class="navbar-header"></div>
+                    <h4>H2H</h4>
+                </div>
             </div>
         </div>
+    </nav>
+    <div class="container">
+        <div ng-controller="myController">
+            <p ng-repeat="(filter,value) in filters">
+                {$ filter $} {$ value $}
+            </p>
+        </div>
     </div>
-</nav>
-<div class="container">
-   <p id="dummy"></p>
-</div>
 </body>
+
 </html>
