@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from tech import *
 import json
 from django.views.decorators.csrf import csrf_protect
+from request_handler import *
 
 mimetype_json = "application/json"
 serialize_type = "json"

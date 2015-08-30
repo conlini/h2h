@@ -14,7 +14,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         in_file = options['data']
         self.stdout.write("Bulk ingesting data.txt")
-        self.ingest(in_file[1])
+        self.ingest(in_file[0])
 
     def ingest(self, file):
         data = []

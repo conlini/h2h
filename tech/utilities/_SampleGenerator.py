@@ -6,7 +6,7 @@ from faker.providers import BaseProvider
 
 
 class TechDataProvider(BaseProvider):
-    base = '"name" : "{{att_name}}", "category" : "{{ cat_name }}" "properties" : '
+    base = '"name" : "{{att_name}}", "category" : "{{ cat_name }}", "properties" : '
 
     # bunch of pattersn for the Item properties. These are randomly chosed per item
     property_patterns = ['{"prop_name" : "{{prop_name_number}}" , "prop_value" :  "{{prop_value_number}}"}',
@@ -93,5 +93,5 @@ if __name__ == "__main__":
     fake.add_provider(TechDataProvider)
     # fake.seed(1234)
     # create 10 items, increase for more
-    for _ in range(15):
+    for _ in range(30):
         print fake.tech_data()

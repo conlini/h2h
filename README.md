@@ -31,18 +31,18 @@ To Run
 
 urls
 http://localhost:port/tech/rest/filters
-http://localhost:port/tech/rest/query POST with payload as 
+http://localhost:port/tech/rest/query POST with payload as
         {
             "query" : [{"att_name" : "[]"}]
 
         }
-        
+
 each att_name object follows the following standard
 att_name : [0, 100] Ranges
 att_name : [key1, key2 , key3] for textual
 att_name : [True/False] for Boolean
-        
-sample 
+
+sample
 {
         "query" : [
                 {"write speed" : [0, 10000]},

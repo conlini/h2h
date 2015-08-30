@@ -25,6 +25,6 @@ urlpatterns = [
     url(r'rest/query/$', search),
     url(r'rest/categories/$', get_categories)
 ]
-
-from tech import *
-load()
+#
+# from tech import *
+# load()

@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 from tech import *
-
+from request_handler import *
 
 # Create your views here.
 

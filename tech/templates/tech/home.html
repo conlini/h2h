@@ -6,12 +6,12 @@
     <title>H2H</title>
     <link type="text/css" href="{% static 'tech/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
     <!--script src="{% static 'tech/jquery-2.1.4.min.js' %}"></script-->
-    <script type="text/javascript" src="{% static 'tech/angular.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'tech/angular.js' %}"></script>
     <script type="text/javascript" src="{% static 'tech/flick/ribbit.js' %}"></script>
     <script type="text/javascript" src="{% static 'tech/flick/controllers.js' %}"></script>
 </head>
 
-<body ng-controller="appController">
+<body ng-controller="AppController">
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <div class="row">
@@ -22,16 +22,24 @@
             </div>
         </div>
     </nav>
-    <div class="container-fluid">
+    <div class="container-fluid" ng-controller="FilterController" style="padding-left: 20px;">
         <div class="row">
-            <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-                <button type="button" class="btn btn-default" ng-click="showFilters()">{$ add_btn_label $}</button>
-            </div>
-            <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11" ng-controller="filterController as fil">
-                <div>
-                    <select ng-show="showfilters" ng-options="filter for filter in filters" ng-model="filter_selected" ng-selected="filterSelected()">
-                    </select>
+            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="border: 1px solid; padding: 8px;">
+                <div ng-repeat="(key, value) in filters">
+                <div class="input-group">
+                    <div ng-if="filter_meta[key] === 'BOOL'">
+                        <label>{$key$}</label>
+                        <input type="checkbox" data-key="{$key$}" ng-click="filter_select($event)">
+                    </div>
+                    <div ng-if="filter_meta[key] === 'INT'">
+                        <label>{$key$}</label>
+                        <input type="range" min="{$value[0]$}" max="{$value[1]$}" ng-model="r_val" value="{$value[0]$}"/><input type="text" ng-model="r_val">
+                    </div>
+
                 </div>
+                </div>
+            </div>
+            <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9" ng-controller="ProductsController">
             </div>
         </div>
     </div>

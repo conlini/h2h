@@ -11,11 +11,19 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
+            name='Category',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('category_name', models.CharField(max_length=75)),
+            ],
+        ),
+        migrations.CreateModel(
             name='Item',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('name', models.CharField(max_length=100)),
                 ('description', models.CharField(max_length=1000, null=True, blank=True)),
+                ('category', models.ForeignKey(to='tech.Category')),
             ],
         ),
         migrations.CreateModel(
@@ -24,6 +32,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('param_name', models.CharField(max_length=50)),
                 ('param_value', models.CharField(max_length=100)),
+                ('param_value_as_int', models.IntegerField(null=True, blank=True)),
                 ('item', models.ForeignKey(to='tech.Item')),
             ],
         ),
