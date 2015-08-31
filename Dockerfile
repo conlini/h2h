@@ -8,7 +8,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /usr/src/app
 
-RUN python manage.py migrage
+RUN python manage.py migrate
 
 RUN python manage.py mockingest tech/management/commands/data.txt
 
