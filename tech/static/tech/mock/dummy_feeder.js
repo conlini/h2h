@@ -1,12 +1,22 @@
+/**
+    A dummy feeder to provide all data to the front end for speedy developement.
+    This js will document expectant result types and API calls that will be invoked on the server.
+
+    All gaps will be marked to be ported into controller.js and will need dev on
+    server.
+**/
+techApp.controller('AppController', ['$scope', function($scope) {
+
+}]);
 techApp.controller('FilterController', ['$scope', "$http", '$document', function($scope, $http, $document) {
     // fetch the filters on load of the page
-    $http.get("/tech/rest/filters").then(function(result) {
-        $scope.filters = result.data.filters
-        $scope.filter_meta = result.data.filter_meta
-    }, function(error) {});
+    // /tech/rest/filters
+    $scope.filters = static_data.filters
+    $scope.filter_meta = static_data.filter_meta
     $scope.filter_select = function(clickevent) {
         var key = clickevent.target.dataset.key
             // invoke the query api over here to get the filtered
+            static_data.get_compares_by_top()
     }
     $document.ready(function() {
         var ranges = document.getElementsByClassName("ranges");
@@ -18,16 +28,10 @@ techApp.controller('FilterController', ['$scope', "$http", '$document', function
             });
             slider.getValue();
         };
-    })
+    });
 }]);
 
 
 techApp.controller('ProductsController', ['$scope', '$http', function($scope, $http) {
-    $http.get("/tech/rest/comparisons?count=5").then(function(result){
-        $scope.topComparisons = result.data.comparisons
-    }, function(error){});
-}]);
-
-techApp.controller('AppController', ['$scope', function($scope){
-
+    // /tech/rest/comparisons/recent?count=5
 }]);
