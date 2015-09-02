@@ -23,7 +23,8 @@ def handle_query_request(query):
             if param_type == "INT":
                 range_key = "itemparam_param_value_as_int__range"
                 compiledQueries.append(Q(itemparam__param_name=k) & Q(itemparam__param_value_as_int__range=v))
-            elif param_type == "BOOL":
+            elif param_type == "BOOL" and v[0]:
+                # we only want to append the true filters. Bools with false shall be ignored as of now.
                 compiledQueries.append(Q(itemparam__param_name=k) & Q(itemparam__param_value=v[0]))
             else:
                 if v:
@@ -40,13 +41,13 @@ def handle_query_request(query):
                 first_run = False
             else:
                 final &= compiledQuery
-        final &= Q(category=Category.objects.get(id=query['cat_id']))
+        # final &= Q(category=Category.objects.get(id=query['cat_id']))
         print final
         db_out = Item.objects.filter(final)
         answer = {}
         result = []
         answer['filteredData'] = result
-        answer['cat_id'] = query['cat_id']
+        # answer['cat_id'] = query['cat_id']
         for item in db_out:
             this_item = {"name": item.name, "description": item.description}
             this_item_params = []

@@ -5,37 +5,49 @@
     All gaps will be marked to be ported into controller.js and will need dev on
     server.
 **/
-techApp.controller('AppController', ['$scope', function($scope) {
-
-}]);
 techApp.controller('FilterController', ['$scope', "$http", '$document', function($scope, $http, $document) {
     // fetch the filters on load of the page
     // /tech/rest/filters
 
     // CHANGE 
     // hard code category
-    $scope.selected_category = "cat1"
+    $scope.query = {
+        "category": "cat1",
+        "filters": []
+    };
+    $scope.product_results = static_data.filterResults($scope.query);
     $scope.filters = static_data.filters
     $scope.filter_meta = static_data.filter_meta
+    $scope.visited_filters = {}
     $scope.filter_select = function(clickevent) {
-            // invoke the query api over here to get the filtered
-            // CHANGE START
-        var dataset =clickevent.target.dataset;
-        var query = { "category" : $scope.selected_category, "filters" : [] }
+        // invoke the query api over here to get the filtered
+        // CHANGE START
+        var dataset = clickevent.target.dataset;
         var key = dataset.key
         var type = $scope.filter_meta[key]
-        if(type === "BOOL") {
-            var o = {};
+        if (type === "BOOL") {
+            var o = $scope.visited_filters[key];
+            if (o === undefined) {
+                // we have never seen this filter before. Create a new obj and push to filters
+                o = {}
+                $scope.query["filters"].push(o)
+                $scope.visited_filters[key] = o
+            }
+
             o[key] = [clickevent.target.checked]
-            query['filters'].push(o)
         } else if (type === "INT") {
-            var min = document.getElementById(dataset.minid).value;
-            var max = document.getElementById(dataset.maxid).value;
-            var o = {};
+            var min = Number(document.getElementById(dataset.minid).value);
+            var max = Number(document.getElementById(dataset.maxid).value);
+            var o = $scope.visited_filters[key];
+            if (o === undefined) {
+                // we have never seen this filter before. Create a new obj and push to filters
+                o = {}
+                $scope.query["filters"].push(o)
+                $scope.visited_filters[key] = o
+            }
             o[key] = [min, max]
-            query['filters'].push(o)
         }
-        $scope.products = static_data.filterResults(query);
+        $scope.product_results = static_data.filterResults($scope.query);
     }
     $document.ready(function() {
         var ranges = document.getElementsByClassName("ranges");
@@ -48,9 +60,4 @@ techApp.controller('FilterController', ['$scope', "$http", '$document', function
             slider.getValue();
         };
     });
-}]);
-
-
-techApp.controller('ProductsController', ['$scope', '$http', function($scope, $http) {
-    // /tech/rest/comparisons/recent?count=5
 }]);

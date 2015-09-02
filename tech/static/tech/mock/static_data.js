@@ -7,6 +7,7 @@ var static_data = {
 
     filterResults: function(query) {
         //  query : {category: "cat" , filters : [{"param_name" : "param_name" , "filter_val" : []}]}
+        console.log(JSON.stringify(query))
         var candidates = this.all_data.slice(0)
         this.all_data.forEach(function(item, index) {
             if (item.category === query.category) {
@@ -29,6 +30,8 @@ var static_data = {
                                 continue;
                             }
                         }
+                    } else {
+                        candidates.splice(index, 1)
                     }
                 };
             } else {
@@ -43,9 +46,9 @@ var static_data = {
         "open source": [true, false],
         "active dev": [true, false],
         "support community": [true, false],
-        "write speed": [500, 23423],
-        "read speed": [234, 1341],
-        "released": [true, false],
+        "write speed": [713, 4727],
+        "read speed": [643, 4893],
+        "released": [854, 4983],
         "type": []
     },
 
@@ -56,14 +59,14 @@ var static_data = {
         "support community": "BOOL",
         "write speed": "INT",
         "read speed": "INT",
-        "released": "BOOL",
+        "released": "INT",
         "type": "STR"
     },
 
     all_data: [{
         "id": 1,
         "name": "ELK",
-        "category": " cat2 ",
+        "category": "cat2",
         "parameters": [{
             "param_name": "distributed",
             "param_value": "True"
@@ -101,7 +104,7 @@ var static_data = {
     }, {
         "id": 2,
         "name": "mysql",
-        "category": " cat1 ",
+        "category": "cat1",
         "parameters": [{
             "param_name": "type",
             "param_value": "cloud infra"
@@ -151,7 +154,7 @@ var static_data = {
     }, {
         "id": 3,
         "name": "java",
-        "category": " cat3 ",
+        "category": "cat3",
         "parameters": [{
             "param_name": "active dev",
             "param_value": "False"
@@ -195,7 +198,7 @@ var static_data = {
     }, {
         "id": 4,
         "name": "hadoop",
-        "category": " cat1 ",
+        "category": "cat1",
         "parameters": [{
             "param_name": "type",
             "param_value": "in-memory solution"
@@ -236,7 +239,7 @@ var static_data = {
     }, {
         "id": 5,
         "name": "splunk",
-        "category": " cat2 ",
+        "category": "cat2",
         "parameters": [{
             "param_name": "read speed",
             "param_value": "3963"
@@ -274,7 +277,7 @@ var static_data = {
     }, {
         "id": 6,
         "name": "hadoop",
-        "category": " cat3 ",
+        "category": "cat3",
         "parameters": [{
             "param_name": "open source",
             "param_value": "True"
@@ -309,7 +312,7 @@ var static_data = {
     }, {
         "id": 7,
         "name": "couchbase",
-        "category": " cat2 ",
+        "category": "cat2",
         "parameters": [{
             "param_name": "open source",
             "param_value": "True"
@@ -350,7 +353,7 @@ var static_data = {
     }, {
         "id": 8,
         "name": "hibernate",
-        "category": " cat1 ",
+        "category": "cat1",
         "parameters": [{
             "param_name": "write speed",
             "param_value": "1223"
@@ -385,7 +388,7 @@ var static_data = {
     }, {
         "id": 9,
         "name": "elasticsearch",
-        "category": " cat3 ",
+        "category": "cat3",
         "parameters": [{
             "param_name": "read speed",
             "param_value": "1388"
@@ -420,7 +423,7 @@ var static_data = {
     }, {
         "id": 10,
         "name": "ruby",
-        "category": " cat1 ",
+        "category": "cat1",
         "parameters": [{
             "param_name": "type",
             "param_value": "cloud infra"
@@ -464,7 +467,7 @@ var static_data = {
     }, {
         "id": 11,
         "name": "storm",
-        "category": " cat1 ",
+        "category": "cat1",
         "parameters": [{
             "param_name": "read speed",
             "param_value": "769"
@@ -505,7 +508,7 @@ var static_data = {
     }, {
         "id": 12,
         "name": "gigaspace",
-        "category": " cat2 ",
+        "category": "cat2",
         "parameters": [{
             "param_name": "open source",
             "param_value": "True"
@@ -540,7 +543,7 @@ var static_data = {
     }, {
         "id": 13,
         "name": "mongo",
-        "category": " cat1 ",
+        "category": "cat1",
         "parameters": [{
             "param_name": "type",
             "param_value": "in-memory solution"
@@ -587,7 +590,7 @@ var static_data = {
     }, {
         "id": 14,
         "name": "mongo",
-        "category": " cat1 ",
+        "category": "cat1",
         "parameters": [{
             "param_name": "active dev",
             "param_value": "True"
@@ -622,7 +625,7 @@ var static_data = {
     }, {
         "id": 15,
         "name": "spring",
-        "category": " cat1 ",
+        "category": "cat1",
         "parameters": [{
             "param_name": "released",
             "param_value": "3734"
@@ -660,7 +663,7 @@ var static_data = {
     }, {
         "id": 16,
         "name": "spring",
-        "category": " cat1 ",
+        "category": "cat1",
         "parameters": [{
             "param_name": "released",
             "param_value": "2685"
@@ -695,7 +698,7 @@ var static_data = {
     }, {
         "id": 17,
         "name": "lucene",
-        "category": " cat1 ",
+        "category": "cat1",
         "parameters": [{
             "param_name": "write speed",
             "param_value": "2394"
@@ -733,7 +736,7 @@ var static_data = {
     }, {
         "id": 18,
         "name": "python",
-        "category": " cat3 ",
+        "category": "cat3",
         "parameters": [{
             "param_name": "open source",
             "param_value": "True"
@@ -780,7 +783,7 @@ var static_data = {
     }, {
         "id": 19,
         "name": "cassandra",
-        "category": " cat3 ",
+        "category": "cat3",
         "parameters": [{
             "param_name": "type",
             "param_value": "log analysis"
@@ -827,7 +830,7 @@ var static_data = {
     }, {
         "id": 20,
         "name": "spring",
-        "category": " cat2 ",
+        "category": "cat2",
         "parameters": [{
             "param_name": "support community",
             "param_value": "False"
@@ -874,7 +877,7 @@ var static_data = {
     }, {
         "id": 21,
         "name": "cassandra",
-        "category": " cat3 ",
+        "category": "cat3",
         "parameters": [{
             "param_name": "type",
             "param_value": "cloud infra"
@@ -921,7 +924,7 @@ var static_data = {
     }, {
         "id": 22,
         "name": "ruby",
-        "category": " cat3 ",
+        "category": "cat3",
         "parameters": [{
             "param_name": "support community",
             "param_value": "True"
@@ -959,7 +962,7 @@ var static_data = {
     }, {
         "id": 23,
         "name": "ELK",
-        "category": " cat1 ",
+        "category": "cat1",
         "parameters": [{
             "param_name": "support community",
             "param_value": "False"
@@ -1000,7 +1003,7 @@ var static_data = {
     }, {
         "id": 24,
         "name": "postgresql",
-        "category": " cat1 ",
+        "category": "cat1",
         "parameters": [{
             "param_name": "open source",
             "param_value": "False"
@@ -1038,7 +1041,7 @@ var static_data = {
     }, {
         "id": 25,
         "name": "hadoop",
-        "category": " cat3 ",
+        "category": "cat3",
         "parameters": [{
             "param_name": "released",
             "param_value": "2570"
@@ -1073,10 +1076,10 @@ var static_data = {
             "param_name": "read speed",
             "param_value": "3976"
         }]
-    } ,{
+    }, {
         "id": 26,
         "name": "scala",
-        "category": " cat3 ",
+        "category": "cat3",
         "parameters": [{
             "param_name": "write speed",
             "param_value": "2339"
@@ -1120,7 +1123,7 @@ var static_data = {
     }, {
         "id": 27,
         "name": "ELK",
-        "category": " cat1 ",
+        "category": "cat1",
         "parameters": [{
             "param_name": "open source",
             "param_value": "False"
@@ -1170,7 +1173,7 @@ var static_data = {
     }, {
         "id": 28,
         "name": "hadoop",
-        "category": " cat2 ",
+        "category": "cat2",
         "parameters": [{
             "param_name": "support community",
             "param_value": "False"
@@ -1214,7 +1217,7 @@ var static_data = {
     }, {
         "id": 29,
         "name": "lucene",
-        "category": " cat2 ",
+        "category": "cat2",
         "parameters": [{
             "param_name": "type",
             "param_value": "log analysis"
@@ -1255,7 +1258,7 @@ var static_data = {
     }, {
         "id": 30,
         "name": "python",
-        "category": " cat2 ",
+        "category": "cat2",
         "parameters": [{
             "param_name": "write speed",
             "param_value": "920"
