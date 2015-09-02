@@ -12,7 +12,7 @@ def handle_query_request(query):
         name : [key1, key2 , key3] for textual
         name : [True/False] for Boolean
 
-        query : {category: "cat" , filters : [{name : [], name : []}]}
+        query : {category: "cat" , filters : [{name : []}, {name : []}]}
     '''
     repo.load()
     compiledQueries = []

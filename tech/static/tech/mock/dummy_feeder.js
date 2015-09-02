@@ -11,12 +11,31 @@ techApp.controller('AppController', ['$scope', function($scope) {
 techApp.controller('FilterController', ['$scope', "$http", '$document', function($scope, $http, $document) {
     // fetch the filters on load of the page
     // /tech/rest/filters
+
+    // CHANGE 
+    // hard code category
+    $scope.selected_category = "cat1"
     $scope.filters = static_data.filters
     $scope.filter_meta = static_data.filter_meta
     $scope.filter_select = function(clickevent) {
-        var key = clickevent.target.dataset.key
             // invoke the query api over here to get the filtered
-            static_data.get_compares_by_top()
+            // CHANGE START
+        var dataset =clickevent.target.dataset;
+        var query = { "category" : $scope.selected_category, "filters" : [] }
+        var key = dataset.key
+        var type = $scope.filter_meta[key]
+        if(type === "BOOL") {
+            var o = {};
+            o[key] = [clickevent.target.checked]
+            query['filters'].push(o)
+        } else if (type === "INT") {
+            var min = document.getElementById(dataset.minid).value;
+            var max = document.getElementById(dataset.maxid).value;
+            var o = {};
+            o[key] = [min, max]
+            query['filters'].push(o)
+        }
+        $scope.products = static_data.filterResults(query);
     }
     $document.ready(function() {
         var ranges = document.getElementsByClassName("ranges");

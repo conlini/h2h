@@ -8,10 +8,9 @@
     <!--script src="{% static 'tech/jquery-2.1.4.min.js' %}"></script-->
     <script type="text/javascript" src="{% static 'tech/angular.js' %}"></script>
     <script type="text/javascript" src="{% static 'tech/flick/ribbit.js' %}"></script>
-   <!-- <script type="text/javascript" src="{% static 'tech/flick/controllers.js' %}"></script> -->
-
-   <!-- mock feeder to get layouting out -->
-   <script type="text/javascript" src="{% static 'tech/mock/static_data.js' %}"></script>
+    <!-- <script type="text/javascript" src="{% static 'tech/flick/controllers.js' %}"></script> -->
+    <!-- mock feeder to get layouting out -->
+    <script type="text/javascript" src="{% static 'tech/mock/static_data.js' %}"></script>
     <script type="text/javascript" src="{% static 'tech/mock/dummy_feeder.js' %}"></script>
 </head>
 
@@ -30,17 +29,18 @@
         <div class="row">
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="border: 1px solid; padding: 8px;">
                 <div ng-repeat="(key, value) in filters">
-                <div class="input-group">
-                    <div ng-if="filter_meta[key] === 'BOOL'">
-                        <label>{$key$}</label>
-                        <input type="checkbox" data-key="{$key$}" ng-click="filter_select($event)">
+                    <div class="input-group">
+                        <div ng-if="filter_meta[key] === 'BOOL'">
+                            <label>{$key$}</label>
+                            <input type="checkbox" data-key="{$key$}" ng-click="filter_select($event)" data-type="BOOL">
+                        </div>
+                        <div ng-if="filter_meta[key] === 'INT'">
+                            <label>{$key$}</label>
+                            <input type="text" value="{$value[0]$}" id="range_{$ $index $}_min" /> -
+                            <input type="text" value="{$value[1]$}" id="range_{$ $index $}_max" />
+                            <button ng-click="filter_select($event)" data-key="{$key$}" data-type="INT" data-minId="range_{$$index$}_min" data-maxId="range_{$$index$}_max">Go</button>
+                        </div>
                     </div>
-                    <div ng-if="filter_meta[key] === 'INT'">
-                        <label>{$key$}</label>
-                        <input type="range" min="{$value[0]$}" max="{$value[1]$}" ng-model="r_val" value="{$value[0]$}"/><input type="text" ng-model="r_val">
-                    </div>
-
-                </div>
                 </div>
             </div>
             <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9" ng-controller="ProductsController">
