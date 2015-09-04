@@ -9,6 +9,10 @@ techApp.controller('FilterController', ['$scope', "$http", '$document', function
         $scope.filters = result.data.filters
         $scope.filter_meta = result.data.filter_meta
     }, function(error) {});
+
+    $http.post("/tech/rest/query/", {"query": $scope.query}).then(function(response) {
+            $scope.product_results = response.data.filteredData;
+        }, function(error) {})
     $scope.filter_select = function(clickevent) {
         var dataset = clickevent.target.dataset;
         var key = dataset.key
