@@ -10,7 +10,7 @@
     <script type="text/javascript" src="{% static 'tech/flick/ribbit.js' %}"></script>
     <script type="text/javascript" src="{% static 'tech/flick/controllers.js' %}"></script>
     <!-- mock feeder to get layouting out -->
-   <!-- <script type="text/javascript" src="{% static 'tech/mock/static_data.js' %}"></script>
+    <!-- <script type="text/javascript" src="{% static 'tech/mock/static_data.js' %}"></script>
     <script type="text/javascript" src="{% static 'tech/mock/dummy_feeder.js' %}"></script>-->
 </head>
 
@@ -29,26 +29,40 @@
         <div class="row">
             <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="border: 1px solid; padding: 8px;">
                 <div ng-repeat="(key, value) in filters">
-                    <div class="input-group">
-                        <div ng-if="filter_meta[key] === 'BOOL'">
+                    <div>
+                        <div ng-if="filter_meta[key] === 'BOOL'" class="input-group">
                             <label>{$key$}</label>
                             <input type="checkbox" data-key="{$key$}" ng-click="filter_select($event)" data-type="BOOL">
                         </div>
-                        <div ng-if="filter_meta[key] === 'INT'">
+                        <div ng-if="filter_meta[key] === 'INT'" class="input-group">
                             <label>{$key$}</label>
-                            <input type="text" value="{$value[0]$}" id="range_{$ $index $}_min" /> -
-                            <input type="text" value="{$value[1]$}" id="range_{$ $index $}_max" />
-                            <button ng-click="filter_select($event)" data-key="{$key$}" data-type="INT" data-minId="range_{$$index$}_min" data-maxId="range_{$$index$}_max">Go</button>
+                            <div>
+                                <input style="width: 50px" type="text" value="{$value[0]$}" id="range_{$ $index $}_min" /> -
+                                <input style="width: 50px" type="text" value="{$value[1]$}" id="range_{$ $index $}_max" />
+                                <button ng-click="filter_select($event)" data-key="{$key$}" data-type="INT" data-minId="range_{$$index$}_min" data-maxId="range_{$$index$}_max">Go</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+            <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+            <table class="table table-condensed table-hover">
+                <thead>
+                    <tr>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td></td>
+                    </tr>
+                </tbody>
+            </table>
                 <div ng-repeat="item in product_results">
                     <!--for each item add a div with values, we probably need box 1 as just the keys, done on-->
                     <div class="panel panel-default">
                         <div class="panel-body">
-                           <h3>{$item.name$}</h3>
+                            <h3>{$item.name$}</h3>
                         </div>
                     </div>
                 </div>

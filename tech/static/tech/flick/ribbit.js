@@ -5,3 +5,12 @@ techApp.config(function($interpolateProvider){
 	$interpolateProvider.startSymbol("{$");
 	$interpolateProvider.endSymbol("$}")
 })
+
+techApp.filter("split" , function(){
+	return function(input, increment) {
+		increment = parseInt(increment)
+		var answer = []
+		var counter = 0
+		
+	}
+});
