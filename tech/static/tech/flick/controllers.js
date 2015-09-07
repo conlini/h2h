@@ -10,9 +10,11 @@ techApp.controller('FilterController', ['$scope', "$http", '$document', function
         $scope.filter_meta = result.data.filter_meta
     }, function(error) {});
 
-    $http.post("/tech/rest/query/", {"query": $scope.query}).then(function(response) {
-            $scope.product_results = response.data.filteredData;
-        }, function(error) {})
+    $http.post("/tech/rest/query/", {
+        "query": $scope.query
+    }).then(function(response) {
+        $scope.product_results = response.data.filteredData;
+    }, function(error) {})
     $scope.filter_select = function(clickevent) {
         var dataset = clickevent.target.dataset;
         var key = dataset.key
@@ -40,9 +42,24 @@ techApp.controller('FilterController', ['$scope', "$http", '$document', function
             o[key] = [min, max]
         }
         // invoke the query api over here to get the filtered
-        $http.post("/tech/rest/query/", {"query": $scope.query}).then(function(response) {
+        $http.post("/tech/rest/query/", {
+            "query": $scope.query
+        }).then(function(response) {
             $scope.product_results = response.data.filteredData;
         }, function(error) {})
+    }
+    $scope.compare_items = {}
+    $scope.compare_list = []
+    $scope.add_for_compare = function(item, add) {
+        $scope.compare_items[item.name] = add;
+        if (add) {
+            $scope.compare_list.push(item)
+        } else {
+            $scope.compare_list.splice($scope.compare_list.indexOf(item), 1)
+        }
+    }
+    $scope.show_compare = function(){
+        
     }
     $document.ready(function() {
         var ranges = document.getElementsByClassName("ranges");
