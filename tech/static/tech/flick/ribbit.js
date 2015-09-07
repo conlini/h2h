@@ -6,11 +6,8 @@ techApp.config(function($interpolateProvider){
 	$interpolateProvider.endSymbol("$}")
 })
 
-techApp.filter("split" , function(){
-	return function(input, increment) {
-		increment = parseInt(increment)
-		var answer = []
-		var counter = 0
-		
-	}
-});
+techApp.filter('default', [function(){
+  return function(value, def) {
+    return value || def;
+  };
+}]);

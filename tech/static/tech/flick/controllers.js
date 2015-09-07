@@ -48,28 +48,36 @@ techApp.controller('FilterController', ['$scope', "$http", '$document', function
             $scope.product_results = response.data.filteredData;
         }, function(error) {})
     }
-    $scope.compare_items = {}
+    $scope.compare_item_flag = {}
     $scope.compare_list = []
     $scope.add_for_compare = function(item, add) {
-        $scope.compare_items[item.name] = add;
+        $scope.compare_item_flag[item.name] = add;
         if (add) {
             $scope.compare_list.push(item)
         } else {
             $scope.compare_list.splice($scope.compare_list.indexOf(item), 1)
         }
     }
-    $scope.show_compare = function(){
-        
+
+    $scope.show_compare = function() {
+        $scope.compare_headers = Object.keys($scope.compare_item_flag)
+        $scope.compare_headers.unshift("Parameters")
+        $scope.compare_parameters = {}
+        $scope.compare_list.forEach(function(item) {
+            item.parameters.forEach(function(p) {
+                if (p.param_name != "name") {
+                    var x = $scope.compare_parameters[p.param_name]
+                    if (!x) {
+                        x = [p.param_name]
+                        $scope.compare_parameters[p.param_name] = x
+                    }
+                    $scope.compare_parameters[p.param_name].push(p.param_value)
+                }
+            })
+
+
+        });
+        $scope.presentResults = true;
+
     }
-    $document.ready(function() {
-        var ranges = document.getElementsByClassName("ranges");
-        for (var i = ranges.length - 1; i >= 0; i--) {
-            var r = ranges[i];
-            var slider = new Slider(r.id, {
-                min: r.dataset.sliderMin,
-                max: r.dataset.sliderMax
-            });
-            slider.getValue();
-        };
-    })
 }]);;

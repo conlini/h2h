@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <title>H2H</title>
     <link type="text/css" href="{% static 'tech/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <script type="text/javascript" src="{% static 'tech/jquery-2.1.4.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'tech/bootstrap/js/bootstrap.min.js' %}"></script>
     <!--script src="{% static 'tech/jquery-2.1.4.min.js' %}"></script-->
     <script type="text/javascript" src="{% static 'tech/angular.js' %}"></script>
     <script type="text/javascript" src="{% static 'tech/flick/ribbit.js' %}"></script>
@@ -41,7 +43,7 @@
     </nav>
     <div class="container-fluid" style="padding-left: 20px;">
         <div class="row">
-            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3" style="border: 1px solid; padding: 8px;">
+            <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2" style="border: 1px solid; padding: 8px;">
                 <div ng-repeat="(key, value) in filters">
                     <div>
                         <div ng-if="filter_meta[key] === 'BOOL'" class="input-group">
@@ -50,6 +52,7 @@
                         </div>
                         <div ng-if="filter_meta[key] === 'INT'" class="input-group">
                             <label>{$key$}</label>
+                            <!-- this should be the description -->
                             <div>
                                 <input style="width: 50px" type="text" value="{$value[0]$}" id="range_{$ $index $}_min" /> -
                                 <input style="width: 50px" type="text" value="{$value[1]$}" id="range_{$ $index $}_max" />
@@ -59,7 +62,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+            <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
                 <div id="compare_bar">
                     <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
                         <ul class="list-group">
@@ -72,7 +75,7 @@
                         </ul>
                     </div>
                     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 float_left">
-                        <a class="btn btn-default btn-lg" ng-show="compare_list.length > 1" ng-click="show_compare" data-toggle="modal" href='#modal-id'>Compare</a>
+                        <a class="btn btn-default btn-lg" ng-show="compare_list.length > 1" data-toggle="modal" href='#modal-id' ng-click="show_compare()">Compare</a>
                     </div>
                 </div>
                 <div>
@@ -100,19 +103,28 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="modal-id">
+    <div class="modal fade" id="modal-id" ng-show="presentResults">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title">Comparison...</h4>
                 </div>
                 <div class="modal-body">
-                {$compare_list$}
+                    <table class="table table-striped table-hover">
+                        <thead>
+                            <tr>
+                                <th ng-repeat="val in compare_headers">{$val$}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="(param, values) in compare_parameters">
+                                <td>{$param$}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="presentResults = false;">Close</button>
                 </div>
             </div>
         </div>
