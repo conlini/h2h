@@ -119,6 +119,7 @@
                         <tbody>
                             <tr ng-repeat="(param, values) in compare_parameters">
                                 <td>{$param$}</td>
+                                <td ng-repeat="v in values">{$(v) || '-'$}</td>
                             </tr>
                         </tbody>
                     </table>
