@@ -53,7 +53,7 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'h2h.urls'
 
 TEMPLATES = [
-   
+
 ]
 
 WSGI_APPLICATION = 'h2h.wsgi.application'
@@ -62,7 +62,8 @@ WSGI_APPLICATION = 'h2h.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
-_SQLLITE = {'default': {'ENGINE': 'django.db.backends.sqlite3', 'NAME': os.path.join(BASE_DIR, 'db.sqlite3'), }}
+_SQLLITE = {'default': {'ENGINE': 'django.db.backends.sqlite3',
+                        'NAME': os.environ.get("db_path", os.path.join(BASE_DIR, 'db.sqlite3')), }}
 DATABASES = _SQLLITE
 
 
@@ -86,8 +87,26 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR,  'templates'),
+    os.path.join(BASE_DIR, 'templates'),
 )
 
 # STATIC ROOT for deployment
-STATIC_ROOT=os.path.join(BASE_DIR, "static_root")
+STATIC_ROOT = os.path.join(BASE_DIR, "static_root")
+
+import os
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
+        },
+    },
+}
