@@ -89,16 +89,16 @@ _MYSQL = {
 _MYSQL2 = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': "",
-        'USER': "",
-        'PASSWORD': "",
-        'HOST': "",
-        'PORT': "",
+        'NAME': "h2h",
+        'USER': "h2hdevmaster",
+        'PASSWORD': "h2h#1234",
+        'HOST': "h2hdev.cbsd9m5mvpho.us-west-2.rds.amazonaws.com",
+        'PORT': "3306",
     }
 }
 DATABSE_OPTIONS = {"SQLLITE" : _SQLLITE, "POSTGRE" : _POSTGRE, "MYSQL" : _MYSQL}
 DATABASES = DATABSE_OPTIONS.get(os.environ.get("DB.CHOICE"), "SQLLITE")
-
+# DATABASES = _MYSQL2
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
