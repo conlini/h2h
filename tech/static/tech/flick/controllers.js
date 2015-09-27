@@ -1,4 +1,4 @@
-techApp.controller('FilterController', ['$scope', "$http", '$document', function($scope, $http, $document) {
+techApp.controller('FilterController', ['$scope', "$http", '$document', '$mdDialog',function($scope, $http, $document, $mdDialog) {
     // fetch the filters on load of the page. We init the query and allow filters to be appended as is. 
     $scope.query = {
         "category": "cat1",
@@ -7,8 +7,14 @@ techApp.controller('FilterController', ['$scope', "$http", '$document', function
     $scope.visited_filters = {}
     $http.get("/tech/rest/filters").then(function(result) {
         // init the context with the initial filters. We may need to implement a refersh logic but for now data is more statically controlled
-        $scope.filters = result.data.filters
-        $scope.filter_meta = result.data.filter_meta
+        $scope.filters = result.data.filters;
+        $scope.filter_meta = result.data.filter_meta;
+        angular.forEach($scope.filters, function(value, key){
+            if($scope.filter_meta[key] === 'INT'){
+                value.selMin = value[0];
+                value.selMax = value[1];
+            }
+        });
     }, function(error) {});
 
     // on load fetch of filter-free data
@@ -20,10 +26,10 @@ techApp.controller('FilterController', ['$scope', "$http", '$document', function
 
     // the filter select function is responsible for adding the appropriate filter into the query.
     // For now this addes bool = false as well and expects the server to ignore it
-    $scope.filter_select = function(clickevent) {
-        var dataset = clickevent.target.dataset;
+    $scope.filter_select = function(type, key) {
+/*        var dataset = clickevent.target.dataset;
         var key = dataset.key
-        var type = $scope.filter_meta[key]
+        var type = $scope.filter_meta[key]*/
         if (type === "BOOL") {
             var o = $scope.visited_filters[key];
             if (o === undefined) {
@@ -32,11 +38,10 @@ techApp.controller('FilterController', ['$scope', "$http", '$document', function
                 $scope.query["filters"].push(o)
                 $scope.visited_filters[key] = o
             }
-
-            o[key] = [clickevent.target.checked]
+            o[key] = $scope.filters[key].checked;
         } else if (type === "INT") {
-            var min = Number(document.getElementById(dataset.minid).value);
-            var max = Number(document.getElementById(dataset.maxid).value);
+/*            var min = Number(document.getElementById(dataset.minid).value);
+            var max = Number(document.getElementById(dataset.maxid).value);*/
             var o = $scope.visited_filters[key];
             if (o === undefined) {
                 // we have never seen this filter before. Create a new obj and push to filters
@@ -44,7 +49,7 @@ techApp.controller('FilterController', ['$scope', "$http", '$document', function
                 $scope.query["filters"].push(o)
                 $scope.visited_filters[key] = o
             }
-            o[key] = [min, max]
+            o[key] = [$scope.filters[key].selMin, $scope.filters[key].selMax];
         }
         // invoke the query api over here to get the filtered
         $http.post("/tech/rest/query/", {
@@ -66,9 +71,13 @@ techApp.controller('FilterController', ['$scope', "$http", '$document', function
         return answer
     }
 
-    $scope.add_for_compare = function(item, add) {
-        $scope.compare_item_flag[item.name] = add;
-        if (add) {
+    $scope.removeFromCompare = function(item) {
+        $scope.compare_item_flag[item.name] = false;
+        $scope.add_for_compare(item);
+    };
+
+    $scope.add_for_compare = function(item) {
+        if ($scope.compare_item_flag[item.name]) {
             $scope.compare_list.push(item)
         } else {
             $scope.compare_list.splice($scope.compare_list.indexOf(item), 1)
@@ -78,7 +87,7 @@ techApp.controller('FilterController', ['$scope', "$http", '$document', function
     // this function is responsible for preparing data for presentation. it should be quick and painfree as will affect user experience
     // doing a 2 pass may be dangerously slow, although at max we will have 3 items to compare, however this limitation may be lifted and may break future 
     // developers down
-    $scope.show_compare = function() {
+    $scope.show_compare = function(ev) {
         $scope.compare_headers = Object.keys($scope.compare_item_flag)
         $scope.compare_headers.unshift("Parameters")
         $scope.compare_parameters = {}
@@ -98,7 +107,46 @@ techApp.controller('FilterController', ['$scope', "$http", '$document', function
         });
         // the presetnR
         $scope.presentResults = true;
-        console.log($scope.compare_parameters)
+        var template = '<md-dialog aria-label="Comparison">'+
+                    '<md-toolbar><div class="md-toolbar-tools"><h2>Comparison</h2>'+
+                    '<span flex></span><md-button class="md-icon-button" ng-click="cancel()">'+
+                    '<md-icon md-font-set="material-icons"> done </md-icon> '+
+                    '</md-button></div></md-toolbar>'+
+                    '<md-dialog-content style="max-width:800px;max-height:810px;">'+
+                    '<table class="md-table table-striped table-hover">'+
+                    '<thead><tr><th ng-repeat="val in headers">{$val$}</th></tr></thead>'+
+                    '<tbody><tr ng-repeat="(param, values) in items">'+
+                    '<td>{$param$}</td><td ng-repeat="v in values">{$(v) || \'-\'$}</td>'+
+                    '</tr></tbody></table></md-dialog-content></md-dialog>';
+        $mdDialog.show({
+          controller: DialogController,
+          template: template,
+          parent: angular.element(document.body),
+          clickOutsideToClose:true,
+          targetEvent: ev,
+          locals: {
+            items: $scope.compare_parameters,
+            headers : $scope.compare_headers
+            }
+        })
+        .then(function(answer) {
+          $scope.status = 'You said the information was "' + answer + '".';
+        }, function() {
+          $scope.status = 'You cancelled the dialog.';
+        });
+    }
 
+    function DialogController($scope, $mdDialog, items, headers) {
+        $scope.items = items;
+        $scope.headers = headers;
+        $scope.hide = function() {
+            $mdDialog.hide();
+        };
+        $scope.cancel = function() {
+            $mdDialog.cancel();
+        };
+        $scope.answer = function(answer) {
+            $mdDialog.hide(answer);
+        }
     }
 }]);;
