@@ -1,4 +1,8 @@
-FROM conlini/python_dev
+FROM python:2.7.10-slim
+
+RUN  apt-get update
+RUN  apt-get install -y libmysqlclient-dev curl build-essential
+
 
 # only needed for sqlite dev db
 ENV db_path="/usr/src/db/db.sqlite3"
