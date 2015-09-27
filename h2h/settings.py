@@ -20,10 +20,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'dnqzt6_=ccf&q#24wgzk4y3mbj*48on^hr#pha+hzq-w9n&du_'
+SECRET_KEY = os.environ.get("secret.key", "abcd1234")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["*"]
 
@@ -64,8 +64,40 @@ WSGI_APPLICATION = 'h2h.wsgi.application'
 
 _SQLLITE = {'default': {'ENGINE': 'django.db.backends.sqlite3',
                         'NAME': os.environ.get("db_path", os.path.join(BASE_DIR, 'db.sqlite3')), }}
-DATABASES = _SQLLITE
 
+_POSTGRE = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get("DB.NAME"),
+        'USER': os.environ.get("DB.USER"),
+        'PASSWORD': os.environ.get("DB.PASSWORD"),
+        'HOST': os.environ.get("DB.HOST"),
+        'PORT': os.environ.get("DB.PORT"),
+    }
+}
+
+_MYSQL = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.environ.get("DB.NAME"),
+        'USER': os.environ.get("DB.USER"),
+        'PASSWORD': os.environ.get("DB.PASSWORD"),
+        'HOST': os.environ.get("DB.HOST"),
+        'PORT': os.environ.get("DB.PORT"),
+    }
+}
+_MYSQL2 = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': "",
+        'USER': "",
+        'PASSWORD': "",
+        'HOST': "",
+        'PORT': "",
+    }
+}
+DATABSE_OPTIONS = {"SQLLITE" : _SQLLITE, "POSTGRE" : _POSTGRE, "MYSQL" : _MYSQL}
+DATABASES = DATABSE_OPTIONS.get(os.environ.get("DB.CHOICE"), "SQLLITE")
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
