@@ -38,7 +38,7 @@ techApp.controller('FilterController', ['$scope', "$http", '$document', '$mdDial
                 $scope.query["filters"].push(o)
                 $scope.visited_filters[key] = o
             }
-            o[key] = $scope.filters[key].checked;
+            o[key] = [$scope.filters[key].checked];
         } else if (type === "INT") {
 /*            var min = Number(document.getElementById(dataset.minid).value);
             var max = Number(document.getElementById(dataset.maxid).value);*/
