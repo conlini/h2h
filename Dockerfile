@@ -1,8 +1,4 @@
-FROM python:2.7.10-slim
-
-RUN  apt-get update
-RUN  apt-get install -y libmysqlclient-dev curl build-essential
-
+FROM conlini/python_dev
 
 # only needed for sqlite dev db
 ENV db_path="/usr/src/db/db.sqlite3"
@@ -26,6 +22,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . /usr/src/app
 
 RUN python manage.py migrate
+RUN python manage.py collectstatic --noinput
 
 # RUN python manage.py mockingest tech/management/commands/data.txt
 
