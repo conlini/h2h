@@ -6,6 +6,7 @@ ENV db_path="/usr/src/db/db.sqlite3"
 RUN mkdir -p /usr/src/db
 
 ENV secret.key="dnqzt6_=ccf&q#24wgzk4y3mbj*48on^hr#pha+hzq-w9n&du_"
+ENV debug.enabled="true"
 ENV DB.NAME=""
 ENV DB.HOST=""
 ENV DB.PORT=""
@@ -13,13 +14,9 @@ ENV DB.USER=""
 ENV DB.PASSWORD=""
 ENV DB.CHOICE="SQLLITE"
 
-RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-COPY requirements.txt /usr/src/app/
 RUN pip install --no-cache-dir -r requirements.txt
-
-COPY . /usr/src/app
 
 RUN python manage.py migrate
 RUN python manage.py collectstatic --noinput
