@@ -6,6 +6,7 @@ ENV db_path="/usr/src/db/db.sqlite3"
 RUN mkdir -p /usr/src/db
 
 ENV secret.key="dnqzt6_=ccf&q#24wgzk4y3mbj*48on^hr#pha+hzq-w9n&du_"
+ENV debug.enabled="true"
 ENV DB.NAME=""
 ENV DB.HOST=""
 ENV DB.PORT=""
