@@ -81,6 +81,7 @@ def create_property_for_value(property_name, value):
     type = _get_best_type_for_property(value)
     property = ParamProperty(param_type=type, param_name=property_name)
     property.save()
+    param_properties[property_name] = property
     return property
 
 
