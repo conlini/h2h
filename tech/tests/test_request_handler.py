@@ -1,4 +1,4 @@
-__author__ = 'adbhasin'
+__author__ = 'adityabhasin'
 import json
 
 from tech.tests import *
