@@ -53,7 +53,7 @@ def property_has_value(property_name, value):
     return value in property_vals[property_name]
 
 
-def _get_best_type_for_property(value):
+def __get_best_type_for_property(value):
     '''
     Given a value, attempt to identify the type of data. This is due to the fact that all
     data is stored as "string" in the DB
@@ -78,9 +78,10 @@ def create_property_for_value(property_name, value):
     :param value:
     :return:
     '''
-    type = _get_best_type_for_property(value)
+    type = __get_best_type_for_property(value)
     property = ParamProperty(param_type=type, param_name=property_name)
     property.save()
+    param_properties[property_name] = property
     return property
 
 
