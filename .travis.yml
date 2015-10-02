@@ -1,6 +1,7 @@
 language: python
 python:
 <<<<<<< HEAD
+<<<<<<< HEAD
     - "2.7"
 install:
     pip install -r dev_requirements.txt
@@ -9,5 +10,10 @@ install:
 install:
     pip3 install -r dev_requirements.txt
 >>>>>>> exploring travis builds
+=======
+    - "3.5"
+install:
+    pip3 install -r dev_requirements.txt
+>>>>>>> 713c50f50b3ecea1fe3fb65f4f24277f307ff0a5
 script:
     python manage.py test
