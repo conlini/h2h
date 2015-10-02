@@ -1290,5 +1290,5 @@ var static_data = {
             "param_name": "active dev",
             "param_value": "True"
         }]
-    }],
+    }]
 }
