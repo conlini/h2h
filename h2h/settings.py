@@ -25,7 +25,6 @@ SECRET_KEY = os.environ.get("secret.key", "abcd1234")
 # SECURITY WARNING: don't run with debug turned on in production!
 debug_val = os.environ.get("debug.enabled", "true")
 
-
 DEBUG = True if debug_val == "true" else False
 
 ALLOWED_HOSTS = ["*"]
@@ -89,19 +88,10 @@ _MYSQL = {
         'PORT': os.environ.get("DB.PORT"),
     }
 }
-_MYSQL2 = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': "h2h",
-        'USER': "h2hdevmaster",
-        'PASSWORD': "h2h#1234",
-        'HOST': "h2hdev.cbsd9m5mvpho.us-west-2.rds.amazonaws.com",
-        'PORT': "3306",
-    }
-}
-DATABSE_OPTIONS = {"SQLLITE" : _SQLLITE, "POSTGRE" : _POSTGRE, "MYSQL" : _MYSQL}
+
+DATABSE_OPTIONS = {"SQLLITE": _SQLLITE, "POSTGRE": _POSTGRE, "MYSQL": _MYSQL}
 DATABASES = DATABSE_OPTIONS.get(os.environ.get("DB.CHOICE", "SQLLITE"))
-print "Selected database is {}".format(str(DATABASES))
+print("Selected database is {}".format(str(DATABASES)))
 # DATABASES = _MYSQL2
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -142,7 +132,7 @@ LOGGING = {
     'loggers': {
         'django': {
             'handlers': ['console'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'ERROR'),
         },
     },
 }

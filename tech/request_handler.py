@@ -1,7 +1,7 @@
 from django.db.models import Q
 from collections import defaultdict
-import repo as repo
-from models import *
+import tech.repo as repo
+from tech.models import *
 import sys
 
 def __tobool(value):
@@ -14,38 +14,38 @@ def __filter_out(key, value, param_type, data):
         for ip in d.itemparam_set.all():
             if ip.param_name == key:
                 if param_type == "INT":
-                    if ip.param_value_as_int < value[0] or ip.param_value_as_int > value[1]:
+                    if ip.param_value_as_int < int(value[0]) or ip.param_value_as_int > int(value[1]):
                         answer.remove(d)
                         continue
                 elif param_type == "BOOL" and value[0]:
-                    if __tobool(ip.param_value.encode("utf-8")) != value[0]:
+                    if __tobool(ip.param_value) != value[0]:
                         answer.remove(d)
                         continue
     return answer
 
 def handle_query_request_internal(query):
-    '''
+    """
     We are resorting to app level filtering as we need to have filters such as
     (itemparam_param_name= 'abc' and itemparam_param_value = 'a') and (itemparam_param_name= 'pqr' and itemparam_param_value = 'b')
      which seems to not work well with Q modes.
 
     :param query:
     :return:
-    '''
+    """
     # TODO need to look at server side filtering of data
-    all = Item.objects.all()
+    __all_items = Item.objects.all()
     # hack, seems to listify the queryset object allowing for filtering
-    len(all)
+    len(__all_items)
     for f in query['filters']:
-        for k,v in f.iteritems():
+        for k,v in f.items():
             param_property = repo.param_properties[k]
-            param_type = param_property.param_type.encode("utf-8")
-            all = __filter_out(k, v, param_type, all)
+            param_type = param_property.param_type
+            __all_items = __filter_out(k, v, param_type, __all_items)
 
     answer = {}
     result = []
     answer['filteredData'] = result
-    for item in all:
+    for item in __all_items:
             this_item = {"name": item.name, "description": item.description}
             this_item_params = []
             for item_param in item.itemparam_set.all():
@@ -59,10 +59,10 @@ def get_filters_and_ranges():
     repo.load()
     filters = defaultdict(list)
     filter_meta = {}
-    for name, param_property in repo.param_properties.iteritems():
+    for name, param_property in repo.param_properties.items():
         for val in repo.property_vals[name]:
 
-            param_type = param_property.param_type.encode("utf-8")
+            param_type = param_property.param_type
             if param_type == "INT":
                 # this should just have 2 values, min and max
                 if name in filters:
@@ -71,7 +71,7 @@ def get_filters_and_ranges():
                     if int(val) < filters[name][0]:
                         filters[name][0] = int(val)
                 else:
-                    filters[name].extend([sys.maxint, -1])
+                    filters[name].extend([sys.maxsize, -1])
                 filter_meta[name] = "INT"
             elif param_type == "BOOL":
                 filters[name] = [True, False]
