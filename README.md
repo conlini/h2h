@@ -1,5 +1,9 @@
-[![Build Status](https://magnum.travis-ci.com/conlini/h2h.svg?token=LNXnVSsyrtzsPrZyTXnY.png)](https://magnum.travis-ci.com/conlini/h2h.svg?token=LNXnVSsyrtzsPrZyTXnY)
+[![Build Status](https://magnum.travis-ci.com/conlini/h2h.svg?token=LNXnVSsyrtzsPrZyTXnY)](https://magnum.travis-ci.com/conlini/h2h)
+
+
 # h2h
+
+
 to setup
 --------
 1.  Install python 2.7
