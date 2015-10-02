@@ -100,7 +100,7 @@ _MYSQL2 = {
     }
 }
 DATABSE_OPTIONS = {"SQLLITE" : _SQLLITE, "POSTGRE" : _POSTGRE, "MYSQL" : _MYSQL}
-DATABASES = DATABSE_OPTIONS.get(os.environ.get("DB.CHOICE"), "SQLLITE")
+DATABASES = DATABSE_OPTIONS.get(os.environ.get("DB.CHOICE", "SQLLITE"))
 print "Selected database is {}".format(str(DATABASES))
 # DATABASES = _MYSQL2
 # Internationalization
