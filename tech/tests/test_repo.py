@@ -10,6 +10,12 @@ class RepoTests(TestCase):
         ParamValue(param_value="val", param_property=self.p).save()
         repo.load()
 
+    @classmethod
+    def tearDownClass(cls):
+        repo.param_properties.pop("test")
+        repo.property_vals.pop("test")
+
+
     def test_add_value_to_property(self):
         repo.add_value_to_property("val2", self.p)
         self.assertDictEqual({"test": ["val", "val2"]}, repo.property_vals)

@@ -20,10 +20,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("secret.key", "abcd1234")
+SECRET_KEY = os.environ.get("SECRET.KEY", "abcd1234")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-debug_val = os.environ.get("debug.enabled", "true")
+debug_val = os.environ.get("DEBUG.ENABLED", "true")
 
 DEBUG = True if debug_val == "true" else False
 
@@ -54,10 +54,6 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'h2h.urls'
 
-TEMPLATES = [
-
-]
-
 WSGI_APPLICATION = 'h2h.wsgi.application'
 
 
@@ -65,7 +61,7 @@ WSGI_APPLICATION = 'h2h.wsgi.application'
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 _SQLLITE = {'default': {'ENGINE': 'django.db.backends.sqlite3',
-                        'NAME': os.environ.get("db_path", os.path.join(BASE_DIR, 'db.sqlite3')), }}
+                        'NAME': os.environ.get("SQLLITE.DB.PATH", os.path.join(BASE_DIR, 'db.sqlite3')), }}
 
 _POSTGRE = {
     'default': {
@@ -119,7 +115,6 @@ TEMPLATE_DIRS = (
 # STATIC ROOT for deployment
 STATIC_ROOT = os.path.join(BASE_DIR, "static_root")
 
-import os
 
 LOGGING = {
     'version': 1,
@@ -132,7 +127,7 @@ LOGGING = {
     'loggers': {
         'django': {
             'handlers': ['console'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'ERROR'),
+            'level': os.getenv('DJANGO_LOG_LEVEL', os.environ.get("LOG.LEVEL", "ERROR")),
         },
     },
 }

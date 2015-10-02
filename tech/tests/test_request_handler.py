@@ -8,6 +8,8 @@ from tech.ingest import ingest_bulk
 from h2h.settings import BASE_DIR
 from tech.request_handler import get_filters_and_ranges, \
     handle_query_request_internal
+from tech.tests import *
+import tech.repo as repo
 
 
 class BaseTests(TestCase):
@@ -28,7 +30,6 @@ class BaseTests(TestCase):
 class FilterAndRanges(BaseTests):
     def test_get_filter_and_ranges(self):
         answer = get_filters_and_ranges()
-        print(answer)
         self.assertDictEqual(
             {"filters": {"open source": [True, False],
                          "read speed": [1, 999],
