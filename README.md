@@ -1,3 +1,6 @@
+[![Build
+Status](https://magnum.travis-ci.com/conlini/h2h.svg?token=LNXnVSsyrtzsPrZyTXnY&branch=feature/task/py3)](https://magnum.travis-ci.com/conlini/h2h)
+
 # h2h
 to setup
 --------
