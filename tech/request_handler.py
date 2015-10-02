@@ -14,7 +14,7 @@ def __filter_out(key, value, param_type, data):
         for ip in d.itemparam_set.all():
             if ip.param_name == key:
                 if param_type == "INT":
-                    if ip.param_value_as_int < int(value[0]) or ip.param_value_as_int > int(value[1]):
+                    if ip.param_value_as_int < value[0] or ip.param_value_as_int > value[1]:
                         answer.remove(d)
                         continue
                 elif param_type == "BOOL" and value[0]:
