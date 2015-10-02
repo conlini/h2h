@@ -1,5 +1,4 @@
 FROM conlini/python_dev:3.5
-MAINTAINER h2h DEV
 
 # only needed for sqlite dev db
 ENV SQLLITE.DB.PATH="/usr/src/db/db.sqlite3"
