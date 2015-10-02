@@ -1,3 +1,4 @@
+[![Build Status(https://magnum.travis-ci.com/conlini/h2h.svg?token=LNXnVSsyrtzsPrZyTXnY.png)]https://magnum.travis-ci.com/conlini/h2h.svg?token=LNXnVSsyrtzsPrZyTXnY]
 # h2h
 to setup
 --------
