@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get("secret.key", "abcd1234")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-debug_val = os.environ("debug.enabled", "true")
+debug_val = os.environ.get("debug.enabled", "true")
 
 
 DEBUG = True if debug_val == "true" else False
