@@ -64,6 +64,10 @@
 </head>
 
 <body layout="column" ng-controller="FilterController">
+    <md-progress-linear 
+    md-mode="indeterminate" 
+    ng-show="loadingFilters || loadingQuery"
+    class="md-accent"></md-progress-linear>
     <md-toolbar layout="row">
     <div class="md-toolbar-tools">
         <md-button ng-click="toggleSidenav('left')" hide-gt-sm class="md-icon-button">
@@ -74,8 +78,7 @@
 </div>
 </md-toolbar>
 <div layout="row" layout-sm="column" layout-align="center center">
-    <md-progress-linear md-mode="indeterminate" md-mode="filterLoaded && "></md-progress-linear>
-    <div flex="33" flex-lg="25" flex-sm="100" flex-gt-lg = "20" >
+    <div flex="33" flex-lg="25" flex-sm="100" flex-gt-lg = "20" ng-hide="loadingFilters">
         <md-list>
             <md-subheader class="md-no-sticky">Filters</md-subheader>
             <md-list-item class="md-1-line" ng-repeat="(key, value) in filters" 

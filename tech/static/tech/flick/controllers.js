@@ -4,7 +4,9 @@ techApp.controller('FilterController', ['$scope', "$http", '$document', '$mdDial
         "category": "cat1",
         "filters": []
     };
-    $scope.visited_filters = {}
+    $scope.visited_filters = {};
+    $scope.loadingFilters = true;
+    $scope.loadingQuery = true;
     $http.get("/tech/rest/filters").then(function(result) {
         // init the context with the initial filters. We may need to implement a refersh logic but for now data is more statically controlled
         $scope.filters = result.data.filters;
@@ -15,14 +17,18 @@ techApp.controller('FilterController', ['$scope', "$http", '$document', '$mdDial
                 value.selMax = value[1];
             }
         });
-    }, function(error) {});
+    }, function(error) {}).finally(function(){
+        $scope.loadingFilters = false;
+    });
 
     // on load fetch of filter-free data
     $http.post("/tech/rest/query/", {
         "query": $scope.query
     }).then(function(response) {
         $scope.product_results = response.data.filteredData;
-    }, function(error) {})
+    }, function(error) {}).finally(function(){
+        $scope.loadingQuery = false;
+    });
 
     // the filter select function is responsible for adding the appropriate filter into the query.
     // For now this addes bool = false as well and expects the server to ignore it
