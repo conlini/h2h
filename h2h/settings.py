@@ -20,11 +20,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("secret.key", "abcd1234")
+SECRET_KEY = os.environ.get("SECRET.KEY", "abcd1234")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-debug_val = os.environ.get("debug.enabled", "true")
-
+debug_val = os.environ.get("DEBUG.ENABLED", "true")
 
 DEBUG = True if debug_val == "true" else False
 
@@ -55,10 +54,6 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'h2h.urls'
 
-TEMPLATES = [
-
-]
-
 WSGI_APPLICATION = 'h2h.wsgi.application'
 
 
@@ -66,7 +61,7 @@ WSGI_APPLICATION = 'h2h.wsgi.application'
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 _SQLLITE = {'default': {'ENGINE': 'django.db.backends.sqlite3',
-                        'NAME': os.environ.get("db_path", os.path.join(BASE_DIR, 'db.sqlite3')), }}
+                        'NAME': os.environ.get("SQLLITE.DB.PATH", os.path.join(BASE_DIR, 'db.sqlite3')), }}
 
 _POSTGRE = {
     'default': {
@@ -89,19 +84,10 @@ _MYSQL = {
         'PORT': os.environ.get("DB.PORT"),
     }
 }
-_MYSQL2 = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': "h2h",
-        'USER': "h2hdevmaster",
-        'PASSWORD': "h2h#1234",
-        'HOST': "h2hdev.cbsd9m5mvpho.us-west-2.rds.amazonaws.com",
-        'PORT': "3306",
-    }
-}
-DATABSE_OPTIONS = {"SQLLITE" : _SQLLITE, "POSTGRE" : _POSTGRE, "MYSQL" : _MYSQL}
+
+DATABSE_OPTIONS = {"SQLLITE": _SQLLITE, "POSTGRE": _POSTGRE, "MYSQL": _MYSQL}
 DATABASES = DATABSE_OPTIONS.get(os.environ.get("DB.CHOICE", "SQLLITE"))
-print "Selected database is {}".format(str(DATABASES))
+print("Selected database is {}".format(str(DATABASES)))
 # DATABASES = _MYSQL2
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
@@ -129,7 +115,6 @@ TEMPLATE_DIRS = (
 # STATIC ROOT for deployment
 STATIC_ROOT = os.path.join(BASE_DIR, "static_root")
 
-import os
 
 LOGGING = {
     'version': 1,
@@ -142,7 +127,7 @@ LOGGING = {
     'loggers': {
         'django': {
             'handlers': ['console'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'DEBUG'),
+            'level': os.getenv('DJANGO_LOG_LEVEL', os.environ.get("LOG.LEVEL", "ERROR")),
         },
     },
 }

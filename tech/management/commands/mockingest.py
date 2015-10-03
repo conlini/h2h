@@ -13,13 +13,13 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         in_file = options['data']
-        self.stdout.write("Bulk ingesting data.txt")
+        self.stdout.write("Bulk ingesting data")
         self.ingest(in_file[0])
 
-    def ingest(self, file):
+    def ingest(file):
         data = []
         with open(file, 'r') as f:
             for line in f.read().splitlines():
-                data.append(json.loads(unicode(line, "latin-1")))
+                data.append(json.loads(line))
                 # print line
         ingest_bulk(data)

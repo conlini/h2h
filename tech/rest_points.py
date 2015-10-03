@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from tech import *
 import json
 from django.views.decorators.csrf import csrf_protect
-from request_handler import *
+from tech.request_handler import *
 
 mimetype_json = "application/json"
 serialize_type = "json"
@@ -16,8 +16,8 @@ def get_filters(request):
 
 def search(request):
     post = request.body
-    query = json.loads(post)
-    result = json.dumps(handle_query_request_internal(query['query'.encode("utf-8")]))
+    query = json.loads(post.decode("utf-8"))
+    result = json.dumps(handle_query_request_internal(query['query']))
     return HttpResponse(result, content_type=mimetype_json)
 
 
