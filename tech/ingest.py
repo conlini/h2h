@@ -14,7 +14,7 @@ def ingest_bulk(data):
             param_value = prop['prop_value']
 
             if not param_name in repo.param_properties:
-                param_property = repo.create_property_for_value(param_name, param_value)
+                param_property = repo.create_property_for_value(param_name, param_value, category)
             else :
                 param_property = repo.param_properties[param_name]
             repo.add_value_to_property(param_value, param_property)

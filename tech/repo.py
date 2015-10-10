@@ -11,6 +11,11 @@ from tech.models import *
 property_vals = defaultdict(list)
 # Cached ParamProperties
 param_properties = {}
+__ROOT = {"name" : "root" , "children" :[]}
+category_hierarchy = __ROOT
+cat_rev_lookup = {"root" : __ROOT}
+
+
 loaded = False
 
 
@@ -34,6 +39,25 @@ def load():
             param_properties[param_name] = param_property
             for vals in param_property.paramvalue_set.all():
                 property_vals[param_name].append(vals.param_value)
+
+        for cat in Category.objects.all():
+            cat_name = cat.category_name
+            current = cat_rev_lookup.get(cat_name, None)
+            parent = None
+            if cat.parent:
+                cat_parent = cat.parent.category_name
+                parent = cat_rev_lookup.get(cat_parent, None)
+            if not current:
+                # we havent visited this guy ever
+                current = {"name" : cat_name, "children" : [], "_id" : cat.id}
+                cat_rev_lookup[cat_name] = current
+            if parent:
+                # stick current as is into the parent. This is the cache load phase
+                parent['children'].append(current)
+            else:
+                # this is a root node
+                cat_rev_lookup["root"]["children"].append(current)
+
         loaded = True
 
 
@@ -71,7 +95,7 @@ def __get_best_type_for_property(value):
         raise RuntimeError
 
 
-def create_property_for_value(property_name, value):
+def create_property_for_value(property_name, value, category):
     """
     Create a new __property as we have never seen this before
     :param property_name:
@@ -79,7 +103,7 @@ def create_property_for_value(property_name, value):
     :return:
     """
     __property_type = __get_best_type_for_property(value)
-    __property = ParamProperty(param_type=__property_type, param_name=property_name)
+    __property = ParamProperty(param_type=__property_type, param_name=property_name, category=category)
     __property.save()
     param_properties[property_name] = __property
     return __property
