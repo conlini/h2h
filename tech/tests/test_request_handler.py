@@ -101,7 +101,7 @@ class CategoryTests(TestCase):
         self.assertFalse(c_xz)
         self.assertFalse(c_xyx)
         cats = get_all_categories()
-        interesting_cat = CategoryTests.__get_cat(cats)
+        interesting_cat = CategoryTests.__get_cat(cats, "xx")
         self.assertDictEqual({"name": "xx", "_id": xx.id, "children": [
             {"name": "xy", "_id": xy.id, "children": [{"name": "xyx", "_id": xyx.id, "children": []}]},
             {"name": "xz", "_id": xz.id, "children": []}]}, interesting_cat)
