@@ -4,6 +4,7 @@ import tech.repo as repo
 from tech.models import *
 import sys
 
+
 def __tobool(value):
     return True if value == "true" else False
 
@@ -23,6 +24,7 @@ def __filter_out(key, value, param_type, data):
                         continue
     return answer
 
+
 def handle_query_request_internal(query):
     """
     We are resorting to app level filtering as we need to have filters such as
@@ -37,7 +39,7 @@ def handle_query_request_internal(query):
     # hack, seems to listify the queryset object allowing for filtering
     len(__all_items)
     for f in query['filters']:
-        for k,v in f.items():
+        for k, v in f.items():
             param_property = repo.param_properties[k]
             param_type = param_property.param_type
             __all_items = __filter_out(k, v, param_type, __all_items)
@@ -46,12 +48,12 @@ def handle_query_request_internal(query):
     result = []
     answer['filteredData'] = result
     for item in __all_items:
-            this_item = {"name": item.name, "description": item.description}
-            this_item_params = []
-            for item_param in item.itemparam_set.all():
-                this_item_params.append({"param_name": item_param.param_name, "param_value": item_param.param_value})
-            this_item["parameters"] = this_item_params
-            result.append(this_item)
+        this_item = {"name": item.name, "description": item.description}
+        this_item_params = []
+        for item_param in item.itemparam_set.all():
+            this_item_params.append({"param_name": item_param.param_name, "param_value": item_param.param_value})
+        this_item["parameters"] = this_item_params
+        result.append(this_item)
     return answer
 
 
@@ -84,3 +86,11 @@ def get_filters_and_ranges():
 
 def get_all_categories():
     return repo.category_hierarchy
+
+
+def save_categories(input, parent=None):
+    for k, v in input.items():
+        cat = repo.create_category(k, parent)
+        if v:
+            for child in v:
+                save_categories(child, cat["name"])

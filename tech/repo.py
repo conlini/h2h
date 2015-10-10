@@ -11,10 +11,9 @@ from tech.models import *
 property_vals = defaultdict(list)
 # Cached ParamProperties
 param_properties = {}
-__ROOT = {"name" : "root" , "children" :[]}
+__ROOT = {"name": "root", "children": []}
 category_hierarchy = __ROOT
-cat_rev_lookup = {"root" : __ROOT}
-
+cat_rev_lookup = {"root": __ROOT}
 
 loaded = False
 
@@ -49,7 +48,7 @@ def load():
                 parent = cat_rev_lookup.get(cat_parent, None)
             if not current:
                 # we havent visited this guy ever
-                current = {"name" : cat_name, "children" : [], "_id" : cat.id}
+                current = {"name": cat_name, "children": [], "_id": cat.id}
                 cat_rev_lookup[cat_name] = current
             if parent:
                 # stick current as is into the parent. This is the cache load phase
@@ -119,3 +118,26 @@ def find_item_param(item, param_name):
     for ip in item.itemparam_set.all():
         if ip.param_name == param_name:
             return ip
+
+
+def create_category(category_name, parent_name=None):
+    cat = cat_rev_lookup.get(category_name, None)
+    parent = None
+    if parent_name:
+        parent = cat_rev_lookup.get(parent_name, None)
+    if cat:
+    # we already have one, and this may be a addition/modification of the parent
+    # this means we a) have to look up who owned this and move the child b) add this as a child to new parent
+    # for now, we will just stick it to the new parent and this becomes a FIXME
+        if parent:
+            parent['children'].append(cat)
+    else:
+        # we have never seen this fellow. lets create a new one
+        _cat_model = Category.objects.update_or_create(category_name=category_name)[0]
+        cat = cat_rev_lookup[category_name] = {"name" : category_name, "children" : [], "_id" : _cat_model.id}
+        if parent:
+            parent["children"].append(cat)
+        else:
+            # no parent, this is a root
+            cat_rev_lookup.get("root").get("children").append(cat)
+    return cat

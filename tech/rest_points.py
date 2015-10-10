@@ -24,3 +24,8 @@ def search(request):
 def get_categories(request):
     categories = json.dumps(get_all_categories())
     return HttpResponse(categories, content_type=mimetype_json)
+
+def save_categories(request):
+    input = json.loads(request.body.decode("utf-8"))
+    save_categories(input)
+    return HttpResponse(status=201)
