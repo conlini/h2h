@@ -90,10 +90,22 @@ def get_all_categories():
     return repo.category_hierarchy
 
 
-def save_categories(input, parent=None):
+def save_categories_internal(input, parent=None):
     repo.load()
     for k, v in input.items():
         cat = repo.create_category(k, parent)
         if v:
             for child in v:
-                save_categories(child, cat["name"])
+                save_categories_internal(child, cat["name"])
+
+def save_category_properties_internal(cat_id, input):
+    repo.load()
+    __cat = Category.objects.get(id=cat_id)
+    for property in input:
+        if property.get("name") not in repo.param_properties:
+            repo.create_property(property.get("name"), property.get("type"), __cat)
+    return True
+
+def get_properties_for_category_internal(cat_id):
+    repo.load()
+    return repo.get_properties_for_category(cat_id)

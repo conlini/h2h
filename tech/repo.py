@@ -8,12 +8,14 @@ from tech.models import *
 # the property_vals dict holds all the possible values of a given property.
 # This allows us to do a fast look up to see if a given proprety name already has the same value ingested
 
+# Cached ParamProperties, values and categories
 property_vals = defaultdict(list)
-# Cached ParamProperties
 param_properties = {}
 __ROOT = {"name": "root", "children": []}
 category_hierarchy = __ROOT
 cat_rev_lookup = {"root": __ROOT}
+__cat_id_mapping = {}
+__cat_prop_mapping = defaultdict(list)
 
 loaded = False
 
@@ -33,12 +35,6 @@ def load():
     global loaded
     if not loaded:
         print("pre-loading data")
-        for param_property in ParamProperty.objects.all():
-            param_name = param_property.param_name
-            param_properties[param_name] = param_property
-            for vals in param_property.paramvalue_set.all():
-                property_vals[param_name].append(vals.param_value)
-
         for cat in Category.objects.all():
             cat_name = cat.category_name
             current = cat_rev_lookup.get(cat_name, None)
@@ -50,12 +46,21 @@ def load():
                 # we havent visited this guy ever
                 current = {"name": cat_name, "children": [], "_id": cat.id}
                 cat_rev_lookup[cat_name] = current
+                __cat_id_mapping[cat.id] = cat_name
             if parent:
                 # stick current as is into the parent. This is the cache load phase
                 parent['children'].append(current)
             else:
                 # this is a root node
                 cat_rev_lookup["root"]["children"].append(current)
+
+        for param_property in ParamProperty.objects.all():
+            param_name = param_property.param_name
+            param_properties[param_name] = param_property
+            cat_id = param_property.category_id
+            __cat_prop_mapping[cat_id].append(param_property)
+            for vals in param_property.paramvalue_set.all():
+                property_vals[param_name].append(vals.param_value)
 
         loaded = True
 
@@ -102,9 +107,14 @@ def create_property_for_value(property_name, value, category):
     :return:
     """
     __property_type = __get_best_type_for_property(value)
-    __property = ParamProperty(param_type=__property_type, param_name=property_name, category=category)
+    return create_property(property_name, __property_type, category)
+
+
+def create_property(property_name, type, category):
+    __property = ParamProperty(param_type=type, param_name=property_name, category=category)
     __property.save()
     param_properties[property_name] = __property
+    __cat_prop_mapping[category.id].append(__property)
     return __property
 
 
@@ -126,18 +136,36 @@ def create_category(category_name, parent_name=None):
     if parent_name:
         parent = cat_rev_lookup.get(parent_name, None)
     if cat:
-    # we already have one, and this may be a addition/modification of the parent
-    # this means we a) have to look up who owned this and move the child b) add this as a child to new parent
-    # for now, we will just stick it to the new parent and this becomes a FIXME
+        # we already have one, and this may be a addition/modification of the parent
+        # this means we a) have to look up who owned this and move the child b) add this as a child to new parent
+        # for now, we will just stick it to the new parent and this becomes a FIXME
         if parent:
             parent['children'].append(cat)
     else:
         # we have never seen this fellow. lets create a new one
         _cat_model = Category.objects.update_or_create(category_name=category_name)[0]
-        cat = cat_rev_lookup[category_name] = {"name" : category_name, "children" : [], "_id" : _cat_model.id}
+        cat = cat_rev_lookup[category_name] = {"name": category_name, "children": [], "_id": _cat_model.id}
+        __cat_id_mapping[_cat_model.id] = category_name
         if parent:
             parent["children"].append(cat)
         else:
             # no parent, this is a root
             cat_rev_lookup.get("root").get("children").append(cat)
     return cat
+
+
+def get_properties_for_category(cat_id):
+    __cat = Category.objects.get(id=cat_id)
+    current = __cat.parent_id
+    hierarchy = [cat_id]
+    while(current):
+        parent = Category.objects.get(id=current)
+        hierarchy.append(parent.id)
+        current = parent.parent_id
+    answer = []
+    for __cat_id in hierarchy:
+        for param_prop in __cat_prop_mapping[int(__cat_id)]:
+            answer.append({ param_prop.param_name : param_prop.param_type })
+    return answer
+
+

@@ -24,4 +24,6 @@ urlpatterns = [
     url(r'rest/query/$', search),
     url(r'rest/categories/$', get_categories),
     url(r'rest/categories/save/$', save_categories),
+    url(r'rest/(?P<cat_id>[0-9]+)/properties/$', get_properties_for_category),
+    url(r'rest/(?P<cat_id>[0-9]+)/properties/save/$', save_category_properties),
 ]

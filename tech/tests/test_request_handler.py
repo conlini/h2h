@@ -7,7 +7,7 @@ import os
 from tech.ingest import ingest_bulk
 from h2h.settings import BASE_DIR
 from tech.request_handler import get_filters_and_ranges, \
-    handle_query_request_internal, save_categories, get_all_categories
+    handle_query_request_internal, save_categories_internal, get_all_categories
 from tech.tests import *
 import tech.repo as repo
 
@@ -91,7 +91,7 @@ class CategoryTests(TestCase):
 
 
     def test_save_categories(self):
-        save_categories({"xx": [{"xy": [{"xyx": []}]}, {"xz": []}]})
+        save_categories_internal({"xx": [{"xy": [{"xyx": []}]}, {"xz": []}]})
         xx, c_xx = Category.objects.get_or_create(category_name="xx")
         xy, c_xy = Category.objects.get_or_create(category_name="xy")
         xz, c_xz = Category.objects.get_or_create(category_name="xz")
