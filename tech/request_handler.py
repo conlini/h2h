@@ -35,6 +35,7 @@ def handle_query_request_internal(query):
     :return:
     """
     # TODO need to look at server side filtering of data
+    repo.load()
     __all_items = Item.objects.all()
     # hack, seems to listify the queryset object allowing for filtering
     len(__all_items)
@@ -85,10 +86,12 @@ def get_filters_and_ranges():
 
 
 def get_all_categories():
+    repo.load()
     return repo.category_hierarchy
 
 
 def save_categories(input, parent=None):
+    repo.load()
     for k, v in input.items():
         cat = repo.create_category(k, parent)
         if v:

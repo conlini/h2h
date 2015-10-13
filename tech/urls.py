@@ -22,8 +22,6 @@ urlpatterns = [
     url(r'^$', home),
     url(r'rest/filters/$', get_filters),
     url(r'rest/query/$', search),
-    url(r'rest/categories/$', get_categories)
+    url(r'rest/categories/$', get_categories),
+    url(r'rest/categories/save/$', save_categories),
 ]
-#
-# from tech import *
-# load()

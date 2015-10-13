@@ -16,7 +16,7 @@ class Command(BaseCommand):
         self.stdout.write("Bulk ingesting data")
         self.ingest(in_file[0])
 
-    def ingest(file):
+    def ingest(self, file):
         data = []
         with open(file, 'r') as f:
             for line in f.read().splitlines():
