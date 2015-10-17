@@ -4,12 +4,11 @@ __author__ = 'adityabhasin'
 import json
 import os
 
-from tech.ingest import ingest_bulk
+from tech.repo import ingest_bulk
 from h2h.settings import BASE_DIR
 from tech.request_handler import get_filters_and_ranges, \
     handle_query_request_internal, save_categories_internal, get_all_categories
 from tech.tests import *
-import tech.repo as repo
 
 
 class BaseTests(TestCase):
@@ -33,10 +32,21 @@ class FilterAndRanges(BaseTests):
         self.assertDictEqual(
             {"filters": {"open source": [True, False],
                          "read speed": [1, 999],
+                         "type": [], "cat2 property" : []},
+             "filter_meta": {"type": "TEXT",
+                             "open source": "BOOL",
+                             "read speed": "INT", "cat2 property" : "TEXT"}}, answer)
+
+    def test_get_filter_for_cat(self):
+        answer = get_filters_and_ranges(Category.objects.get(category_name="cat1").id)
+        self.assertDictEqual(
+            {"filters": {"open source": [True, False],
+                         "read speed": [1, 999],
                          "type": []},
              "filter_meta": {"type": "TEXT",
                              "open source": "BOOL",
                              "read speed": "INT"}}, answer)
+
 
 
 class QueryHandling(BaseTests):

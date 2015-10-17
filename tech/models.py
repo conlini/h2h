@@ -11,7 +11,6 @@ class ParamProperty(models.Model):
     A ParamProperty is a single property that describes any Item.
     This object is metadata only for the property
     """
-    # TODO Make this object category specific to allow for a better filter set
     param_type = models.CharField(max_length=20, null=False, blank=False)
     param_name = models.CharField(max_length=50, null=False, blank=False)
     category = models.ForeignKey(Category)

@@ -1,8 +1,7 @@
 import json
-import os
 
-from tech.ingest import ingest_bulk
-from django.core.management.base import CommandError, BaseCommand
+from tech.repo import ingest_bulk
+from django.core.management.base import BaseCommand
 
 class Command(BaseCommand):
     help = "bulk mock data ingest"

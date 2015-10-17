@@ -10,7 +10,7 @@ from tech.models import *
 
 # Cached ParamProperties, values and categories
 property_vals = defaultdict(list)
-param_properties = {}
+__param_properties = {}
 __ROOT = {"name": "root", "children": []}
 category_hierarchy = __ROOT
 cat_rev_lookup = {"root": __ROOT}
@@ -18,11 +18,6 @@ __cat_id_mapping = {}
 __cat_prop_mapping = defaultdict(list)
 
 loaded = False
-
-
-def get_properties():
-    return param_properties
-
 
 def load():
     """
@@ -56,7 +51,7 @@ def load():
 
         for param_property in ParamProperty.objects.all():
             param_name = param_property.param_name
-            param_properties[param_name] = param_property
+            __param_properties[param_name] = param_property
             cat_id = param_property.category_id
             __cat_prop_mapping[cat_id].append(param_property)
             for vals in param_property.paramvalue_set.all():
@@ -113,7 +108,7 @@ def create_property_for_value(property_name, value, category):
 def create_property(property_name, type, category):
     __property = ParamProperty(param_type=type, param_name=property_name, category=category)
     __property.save()
-    param_properties[property_name] = __property
+    __param_properties[property_name] = __property
     __cat_prop_mapping[category.id].append(__property)
     return __property
 
@@ -156,12 +151,7 @@ def create_category(category_name, parent_name=None):
 
 def get_properties_for_category(cat_id):
     __cat = Category.objects.get(id=cat_id)
-    current = __cat.parent_id
-    hierarchy = [cat_id]
-    while(current):
-        parent = Category.objects.get(id=current)
-        hierarchy.append(parent.id)
-        current = parent.parent_id
+    hierarchy = __get_cat_hierarchy(__cat, cat_id)
     answer = []
     for __cat_id in hierarchy:
         for param_prop in __cat_prop_mapping[int(__cat_id)]:
@@ -169,3 +159,46 @@ def get_properties_for_category(cat_id):
     return answer
 
 
+def __get_cat_hierarchy(__cat, cat_id):
+    current = __cat.parent_id
+    hierarchy = [cat_id]
+    while (current):
+        parent = Category.objects.get(id=current)
+        hierarchy.append(parent.id)
+        current = parent.parent_id
+    return hierarchy
+
+
+def get_param_properties(cat_id=None):
+    if cat_id:
+        hierarchy = __get_cat_hierarchy(Category.objects.get(id=cat_id), cat_id)
+        answer = {}
+        for __cat_id in hierarchy:
+            if __cat_id in __cat_prop_mapping:
+                for param_prop in __cat_prop_mapping.get(__cat_id):
+                    answer[param_prop.param_name] = param_prop
+        return answer
+    return __param_properties
+
+def ingest_bulk(data):
+    for d in data:
+        category_name = d['category']
+        category = Category.objects.get_or_create(category_name=category_name)[0]
+        name = d['name']
+        item = Item.objects.get_or_create(name=name, category=category)[0]
+        for prop in d['properties']:
+            param_name = prop['prop_name']
+            param_value = prop['prop_value']
+
+            if not param_name in get_param_properties(category.id):
+                param_property = create_property_for_value(param_name, param_value, category)
+            else :
+                param_property = get_param_properties()[param_name]
+            add_value_to_property(param_value, param_property)
+            ip = find_item_param(item, param_name)
+            if not ip:
+                ip = ItemParam(param_name=param_name, param_property=param_property, item=item)
+            ip.param_value = param_value
+            if param_property.param_type == "INT" :
+                ip.param_value_as_int = int(param_value)
+            ip.save()

@@ -19,7 +19,7 @@ class RepoTests(TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        repo.param_properties.pop("test", None)
+        repo.get_param_properties().pop("test", None)
         repo.property_vals.pop("test", None)
 
     def test_add_value_to_property(self):
@@ -34,7 +34,7 @@ class RepoTests(TestCase):
     def test_create_prop_for_value(self):
         repo.create_property_for_value("test2", "123", self.a)
         self.assertDictEqual({"test": ["val", "val2"]}, repo.property_vals)
-        self.assertEqual(2, len(repo.param_properties))
+        self.assertEqual(2, len(repo.get_param_properties()))
         self.assertEqual(2, ParamProperty.objects.count())
 
     def test_find_item_param(self):

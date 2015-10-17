@@ -41,7 +41,7 @@ def handle_query_request_internal(query):
     len(__all_items)
     for f in query['filters']:
         for k, v in f.items():
-            param_property = repo.param_properties[k]
+            param_property = repo.get_param_properties().get(k)
             param_type = param_property.param_type
             __all_items = __filter_out(k, v, param_type, __all_items)
 
@@ -58,11 +58,11 @@ def handle_query_request_internal(query):
     return answer
 
 
-def get_filters_and_ranges():
+def get_filters_and_ranges(cat_id=None):
     repo.load()
     filters = defaultdict(list)
     filter_meta = {}
-    for name, param_property in repo.param_properties.items():
+    for name, param_property in repo.get_param_properties(cat_id).items():
         for val in repo.property_vals[name]:
 
             param_type = param_property.param_type
@@ -102,10 +102,13 @@ def save_category_properties_internal(cat_id, input):
     repo.load()
     __cat = Category.objects.get(id=cat_id)
     for property in input:
-        if property.get("name") not in repo.param_properties:
+        if property.get("name") not in repo.get_param_properties():
             repo.create_property(property.get("name"), property.get("type"), __cat)
     return True
 
 def get_properties_for_category_internal(cat_id):
     repo.load()
     return repo.get_properties_for_category(cat_id)
+
+def save_items_interna(input):
+    repo.ingest_bulk(input)
