@@ -1,10 +1,94 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html> {% load static %}
+<html ng-app="tech_app">
+
 <head lang="en">
     <meta charset="UTF-8">
-    <title></title>
+    <title>H2H</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico"/>
+    <!-- <link type="text/css" href="{% static 'tech/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" /> -->
+    <link type="text/css" href="/static/tech/css/angular-material/angular-material.min.css" rel="stylesheet"/>
+    <link type="text/css" href="/static/tech/css/angular-material/roboto-material.css" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui"/>
+    <style type="text/css">
+        .product-panel {
+            float: left;
+            margin: 5px;
+            width: 300px;
+            /*height: 200px;*/
+            font: 15px;
+            /*text-align: center;*/
+        }
+
+        .float_left {
+            float: left;
+        }
+
+        .filters md-input-container {
+            padding: 2px 2px;
+        }
+
+        .md-table {
+            min-width: 100%;
+            border-collapse: collapse;
+        }
+
+        .md-table tbody tr:hover, .md-table tbody tr:focus {
+            cursor: pointer;
+            background-color: rgba(63, 81, 181, 0.2);
+        }
+
+        .md-table thead {
+            border-bottom: 1px solid rgb(230, 230, 230);
+            color: rgb(130, 130, 130);
+            text-align: center;
+            font-size: 1em;
+            font-weight: 700;
+            padding: 16px 16px 16px 0;
+        }
+
+        .md-table tbody {
+            white-space: nowrap;
+            padding: 16px 16px 16px 0;
+        }
+
+        .md-table tbody tr:nth-child(odd) {
+            background-color: #eee;
+        }
+
+        .md-table td {
+            padding: 16px;
+            font-size: 0.9em;
+        }
+
+
+    </style>
 </head>
-<body>
+
+<body layout="column">
+
+<md-toolbar layout="row">
+    <div class="md-toolbar-tools">
+        <md-button ng-click="toggleSidenav('left')" hide-gt-sm class="md-icon-button">
+            <md-icon aria-label="Menu" md-svg-icon="https://s3-us-west-2.amazonaws.com/s.cdpn.io/68133/menu.svg">
+            </md-icon>
+        </md-button>
+        <h1>H2H</h1>
+    </div>
+</md-toolbar>
+
+{% block main %} {% endblock %}
+
+<script type="text/javascript" src="/static/tech/jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="/static/tech/angular.min.js"></script>
+<script type="text/javascript" src="/static/tech/js/angular-animate/angular-animate.min.js"></script>
+<script type="text/javascript" src="/static/tech/js/angular-aria/angular-aria.min.js"></script>
+<script type="text/javascript" src="/static/tech/js/angular-material/angular-material.min.js"></script>
+<script type="text/javascript" src="/static/tech/flick/ribbit.js"></script>
+<script type="text/javascript" src="/static/tech/flick/controllers.js"></script>
+<script type="text/javascript" src="/static/tech/flick/editPropertiesController.js"></script>
 
 </body>
+
 </html>

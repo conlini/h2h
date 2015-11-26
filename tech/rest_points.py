@@ -10,7 +10,7 @@ serialize_type = "json"
 
 
 def get_filters(request, cat_id=None):
-    filters = json.dumps(get_filters_and_ranges(int(cat_id)))
+    filters = json.dumps(get_filters_and_ranges(cat_id))
     return HttpResponse(filters, content_type=mimetype_json)
 
 

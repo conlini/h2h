@@ -1,0 +1,21 @@
+{% extends "tech/base.html" %}
+
+{% block main %}
+    <div layout="row" layout-sm="column"  ng-controller="EditPropertiesController">
+        <md-menu md-offset="0 40">
+            <!-- Trigger element is a md-button with an icon -->
+            <md-button ng-click="$mdOpenMenu($event)" class="md-button" aria-label="Open sample menu"
+                       ng-click="$mdOpenMenu($event)">
+                <a href="#" md-menu-origin>Categories</a>
+            </md-button>
+            <md-menu-content>
+                <md-menu-item ng-repeat="cat in categories">
+                    <md-button>{$ cat.name $}</md-button>
+                </md-menu-item>
+            </md-menu-content>
+        </md-menu>
+
+    </div>
+
+
+{% endblock %}
