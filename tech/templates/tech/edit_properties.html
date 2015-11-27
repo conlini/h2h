@@ -1,18 +1,17 @@
 {% extends "tech/base.html" %}
 
 {% block main %}
-    <div layout="row" layout-sm="column"  ng-controller="EditPropertiesController">
+    <div layout="column" layout-sm="column"  ng-controller="EditPropertiesController">
         <div>
             <md-menu md-offset="0 40">
                 <!-- Trigger element is a md-button with an icon -->
-                <md-button ng-click="$mdOpenMenu($event)" class="md-button" aria-label="Open sample menu"
-                           ng-click="$mdOpenMenu($event)">
-                    
-                    {$ selected_category $}
+                <md-button ng-click="$mdOpenMenu($event)" class="md-raised" aria-label="Open sample menu">
+
+                    {$ selected_category.name $}
                 </md-button>
                 <md-menu-content>
                     <md-menu-item ng-repeat="cat in categories">
-                        <md-button ng-click="getPropertiesForCategory(cat)">{$ cat.name $}</md-button>
+                        <md-button ng-click="get_properties_for_categories(cat)">{$ cat.name $}</md-button>
                     </md-menu-item>
                 </md-menu-content>
             </md-menu>
@@ -27,10 +26,16 @@
                     <th>Property Type</th>
                 </tr>
                 <tr ng-repeat="prop in properties">
-                    <td>{$ prop.property_name $}</td>
-                    <td><p ng-hide="edit_mode">{$ prop.property_value $}</p>
+                    <td>
+                        <p ng-hide="edit_mode">{$ prop.property_name $}</p>
+                        <md-input-container ng-show="edit_mode" >
+
+                            <input type="text" ng-model="prop.property_name" >
+                        </md-input-container>
+                    </td>
+                    <td><p ng-hide="edit_mode">{$ prop.property_type $}</p>
                         <div ng-show="edit_mode">
-                            <select ng-model="prop.property_value">
+                            <select ng-model="prop.property_type">
                                 <option value="BOOL">Boolean</option>
                                 <option value="INT">Number</option>
                                 <option value="STRING">Text</option>
@@ -40,8 +45,10 @@
                 </tr>
                 
             </table>
-            <div>
-                        
+            <div ng-show="edit_mode">
+                <i class="material-icons" ng-click="add_new_property()">add_circle_outline</i>
+                <i class="material-icons" ng-click="save_properties()">save</i>
+                <i class="material-icons" ng-click="cancel_edit()">cancel</i>
             </div>
         </div>
     </div>

@@ -11,3 +11,4 @@ techApp.filter('default', [function(){
     return value || def;
   };
 }]);
+

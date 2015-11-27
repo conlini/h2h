@@ -102,8 +102,8 @@ def save_category_properties_internal(cat_id, input):
     repo.load()
     __cat = Category.objects.get(id=cat_id)
     for property in input:
-        if property.get("name") not in repo.get_param_properties():
-            repo.create_property(property.get("name"), property.get("type"), __cat)
+        if property.get("property_name") not in repo.get_param_properties():
+            repo.create_property(property.get("property_name"), property.get("property_type"), __cat)
     return True
 
 def get_properties_for_category_internal(cat_id):
