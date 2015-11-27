@@ -18,6 +18,9 @@
             </md-menu>
         </div>
         <div id="properties_div" ng-show="got_properties">
+            <div layout="column" layout-align="right">
+                <i class="material-icons" ng-click="edit_properties()">mode_edit</i>
+            </div>
             <table>
                 <tr>
                     <th>Property Name</th>
@@ -25,10 +28,21 @@
                 </tr>
                 <tr ng-repeat="prop in properties">
                     <td>{$ prop.property_name $}</td>
-                    <td>{$ prop.property_value $}</td>
+                    <td><p ng-hide="edit_mode">{$ prop.property_value $}</p>
+                        <div ng-show="edit_mode">
+                            <select ng-model="prop.property_value">
+                                <option value="BOOL">Boolean</option>
+                                <option value="INT">Number</option>
+                                <option value="STRING">Text</option>
+                            </select>
+                        </div>
+                    </td>
                 </tr>
+                
             </table>
-            
+            <div>
+                        
+            </div>
         </div>
     </div>
 
