@@ -155,7 +155,7 @@ def get_properties_for_category(cat_id):
     answer = []
     for __cat_id in hierarchy:
         for param_prop in __cat_prop_mapping[int(__cat_id)]:
-            answer.append({ param_prop.param_name : param_prop.param_type })
+            answer.append({ "property_name" : param_prop.param_name , "property_value" : param_prop.param_type })
     return answer
 
 
