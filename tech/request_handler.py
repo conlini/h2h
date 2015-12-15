@@ -4,6 +4,7 @@ import tech.repo as repo
 from tech.models import *
 import sys
 
+
 def __tobool(value):
     return True if value == "true" else False
 
@@ -23,6 +24,7 @@ def __filter_out(key, value, param_type, data):
                         continue
     return answer
 
+
 def handle_query_request_internal(query):
     """
     We are resorting to app level filtering as we need to have filters such as
@@ -33,12 +35,13 @@ def handle_query_request_internal(query):
     :return:
     """
     # TODO need to look at server side filtering of data
+    repo.load()
     __all_items = Item.objects.all()
     # hack, seems to listify the queryset object allowing for filtering
     len(__all_items)
     for f in query['filters']:
-        for k,v in f.items():
-            param_property = repo.param_properties[k]
+        for k, v in f.items():
+            param_property = repo.get_param_properties().get(k)
             param_type = param_property.param_type
             __all_items = __filter_out(k, v, param_type, __all_items)
 
@@ -46,20 +49,20 @@ def handle_query_request_internal(query):
     result = []
     answer['filteredData'] = result
     for item in __all_items:
-            this_item = {"name": item.name, "description": item.description}
-            this_item_params = []
-            for item_param in item.itemparam_set.all():
-                this_item_params.append({"param_name": item_param.param_name, "param_value": item_param.param_value})
-            this_item["parameters"] = this_item_params
-            result.append(this_item)
+        this_item = {"name": item.name, "description": item.description}
+        this_item_params = []
+        for item_param in item.itemparam_set.all():
+            this_item_params.append({"param_name": item_param.param_name, "param_value": item_param.param_value})
+        this_item["parameters"] = this_item_params
+        result.append(this_item)
     return answer
 
 
-def get_filters_and_ranges():
+def get_filters_and_ranges(cat_id=None):
     repo.load()
     filters = defaultdict(list)
     filter_meta = {}
-    for name, param_property in repo.param_properties.items():
+    for name, param_property in repo.get_param_properties(cat_id).items():
         for val in repo.property_vals[name]:
 
             param_type = param_property.param_type
@@ -83,9 +86,29 @@ def get_filters_and_ranges():
 
 
 def get_all_categories():
-    answer = {}
-    cats = []
-    answer['categories'] = cats
-    for cat in Category.objects.all():
-        cats.append({"id": cat.id, "name": cat.category_name})
-    return answer
+    repo.load()
+    return repo.category_hierarchy
+
+
+def save_categories_internal(input, parent=None):
+    repo.load()
+    for k, v in input.items():
+        cat = repo.create_category(k, parent)
+        if v:
+            for child in v:
+                save_categories_internal(child, cat["name"])
+
+def save_category_properties_internal(cat_id, input):
+    repo.load()
+    __cat = Category.objects.get(id=cat_id)
+    for property in input:
+        if property.get("property_name") not in repo.get_param_properties():
+            repo.create_property(property.get("property_name"), property.get("property_type"), __cat)
+    return True
+
+def get_properties_for_category_internal(cat_id):
+    repo.load()
+    return repo.get_properties_for_category(cat_id)
+
+def save_items_interna(input):
+    repo.ingest_bulk(input)

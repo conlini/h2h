@@ -2,7 +2,7 @@
   {
     "id": 1,
     "name": "item1",
-    "category": " cat2 ",
+    "category": "cat2",
     "properties": [
       {
         "prop_name": "type",
@@ -15,13 +15,17 @@
       {
         "prop_name": "open source",
         "prop_value": "true"
+      },
+      {
+        "prop_name": "cat2 property",
+        "prop_value": "cat2"
       }
     ]
   },
   {
     "id": 2,
     "name": "item2",
-    "category": " cat1 ",
+    "category": "cat1",
     "properties": [
       {
         "prop_name": "type",
@@ -40,7 +44,7 @@
   {
     "id": 3,
     "name": "item3",
-    "category": " cat3 ",
+    "category": "cat3",
     "properties": [
       {
         "prop_name": "type",
@@ -59,7 +63,7 @@
   {
     "id": 4,
     "name": "item4",
-    "category": " cat1 ",
+    "category": "cat1",
     "properties": [
       {
         "prop_name": "type",
@@ -78,7 +82,7 @@
   {
     "id": 5,
     "name": "item5",
-    "category": " cat2 ",
+    "category": "cat2",
     "properties": [
       {
         "prop_name": "type",

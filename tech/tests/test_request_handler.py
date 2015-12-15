@@ -4,12 +4,11 @@ __author__ = 'adityabhasin'
 import json
 import os
 
-from tech.ingest import ingest_bulk
+from tech.repo import ingest_bulk
 from h2h.settings import BASE_DIR
 from tech.request_handler import get_filters_and_ranges, \
-    handle_query_request_internal
+    handle_query_request_internal, save_categories_internal, get_all_categories
 from tech.tests import *
-import tech.repo as repo
 
 
 class BaseTests(TestCase):
@@ -33,10 +32,21 @@ class FilterAndRanges(BaseTests):
         self.assertDictEqual(
             {"filters": {"open source": [True, False],
                          "read speed": [1, 999],
+                         "type": [], "cat2 property" : []},
+             "filter_meta": {"type": "TEXT",
+                             "open source": "BOOL",
+                             "read speed": "INT", "cat2 property" : "TEXT"}}, answer)
+
+    def test_get_filter_for_cat(self):
+        answer = get_filters_and_ranges(Category.objects.get(category_name="cat1").id)
+        self.assertDictEqual(
+            {"filters": {"open source": [True, False],
+                         "read speed": [1, 999],
                          "type": []},
              "filter_meta": {"type": "TEXT",
                              "open source": "BOOL",
                              "read speed": "INT"}}, answer)
+
 
 
 class QueryHandling(BaseTests):
@@ -76,3 +86,32 @@ class QueryHandling(BaseTests):
         self.assertEqual(["item1"],
                          [answer['filteredData'][0]["name"]
                           ])
+
+
+class CategoryTests(TestCase):
+
+    @staticmethod
+    def __get_cat(root, cat_name):
+        for k,v in root.items():
+            if k == "children":
+                for branch in v:
+                    for x, y in branch.items():
+                        if x == "name" and y == cat_name:
+                            return branch
+
+
+    def test_save_categories(self):
+        save_categories_internal({"xx": [{"xy": [{"xyx": []}]}, {"xz": []}]})
+        xx, c_xx = Category.objects.get_or_create(category_name="xx")
+        xy, c_xy = Category.objects.get_or_create(category_name="xy")
+        xz, c_xz = Category.objects.get_or_create(category_name="xz")
+        xyx, c_xyx = Category.objects.get_or_create(category_name="xyx")
+        self.assertFalse(c_xx)
+        self.assertFalse(c_xy)
+        self.assertFalse(c_xz)
+        self.assertFalse(c_xyx)
+        cats = get_all_categories()
+        interesting_cat = CategoryTests.__get_cat(cats, "xx")
+        self.assertDictEqual({"name": "xx", "_id": xx.id, "children": [
+            {"name": "xy", "_id": xy.id, "children": [{"name": "xyx", "_id": xyx.id, "children": []}]},
+            {"name": "xz", "_id": xz.id, "children": []}]}, interesting_cat)

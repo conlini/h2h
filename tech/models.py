@@ -4,15 +4,16 @@ from django.db import models
 
 class Category(models.Model):
     category_name = models.CharField(max_length=75, null=False, blank=False)
+    parent = models.ForeignKey("Category", blank=True, null=True)
 
 class ParamProperty(models.Model):
     """
     A ParamProperty is a single property that describes any Item.
     This object is metadata only for the property
     """
-    # TODO Make this object category specific to allow for a better filter set
     param_type = models.CharField(max_length=20, null=False, blank=False)
     param_name = models.CharField(max_length=50, null=False, blank=False)
+    category = models.ForeignKey(Category)
 
 
 class ParamValue(models.Model):
