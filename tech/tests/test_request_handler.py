@@ -50,23 +50,24 @@ class FilterAndRanges(BaseTests):
 
 
 class QueryHandling(BaseTests):
+
     def test_bool_positive_filter(self):
         answer = handle_query_request_internal(
             {"filters": [{"open source": [True]}], "category": "cat1"})
         self.assertEqual(3, len(answer["filteredData"]))
-        self.assertEqual(["item1", "item2", "item4"],
-                         [answer['filteredData'][0]["name"],
+        self.assertEqual(sorted(["item1", "item2", "item4"]),
+                         sorted([answer['filteredData'][0]["name"],
                           answer['filteredData'][1]["name"],
-                          answer['filteredData'][2]["name"]])
+                          answer['filteredData'][2]["name"]]))
 
     def test_range_filter(self):
         answer = handle_query_request_internal(
             {"filters": [{"read speed": [100, 300]}], "category": "cat1"})
         self.assertEqual(2, len(answer["filteredData"]))
-        self.assertEqual(["item1", "item3"],
-                         [answer['filteredData'][0]["name"],
+        self.assertEqual(sorted(["item1", "item3"]),
+                         sorted([answer['filteredData'][0]["name"],
                           answer['filteredData'][1]["name"],
-                          ])
+                          ]))
 
     def test_bool_negative_filter(self):
         answer = handle_query_request_internal(
