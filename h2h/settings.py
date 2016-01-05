@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import logging.config as log_conf
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -115,19 +116,9 @@ TEMPLATE_DIRS = (
 # STATIC ROOT for deployment
 STATIC_ROOT = os.path.join(BASE_DIR, "static_root")
 
+LOGGING_CONFIG = None
+LOGGING = {"version" : 1, "disable_existing_loggers" : False}
+__LOG_CONFIG = os.path.join(BASE_DIR, "conf", "logging.ini")
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', os.environ.get("LOG.LEVEL", "ERROR")),
-        },
-    },
-}
+
+log_conf.fileConfig(__LOG_CONFIG)
