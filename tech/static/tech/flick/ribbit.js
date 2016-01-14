@@ -15,7 +15,8 @@ techApp.filter('default', [function(){
 var edit_product_template = '<md-dialog aria-label="Comparison">' +
                         '<md-toolbar>' +
                             '<div class="md-toolbar-tools">' +
-                                '<h2>Edit {$ product.name $}</h2>' +
+                                '<h2 ng-show="edit">Edit {$ product.name $}</h2>' +
+                                '<h2 ng-show="!edit">Add <input id="product_name" value="{$product.name$}a"></h2>' +
                                 '<span flex></span>' +
                                 '<md-button class="md-icon-button" ng-click="save_product(product)">' +
                                     '<md-icon md-font-set="material-icons"> done </md-icon> ' +
@@ -26,7 +27,8 @@ var edit_product_template = '<md-dialog aria-label="Comparison">' +
                             '<table class="md-table table-striped table-hover">' +
                                 '<thead>' +
                                     '<tr>' +
-                                        '<th ng-repeat="val in headers">{$val$}</th>' +
+                                        '<th>Property Name</th>' +
+                                        '<th>Property Value</th>' +
                                     '</tr>' +
                                 '</thead>' +
                                 '<tbody>' +

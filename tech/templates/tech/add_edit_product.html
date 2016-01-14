@@ -16,7 +16,10 @@
                 </md-menu-content>
             </md-menu>
         </div>
-        <div id="products_div">
+        <div id="products_div" ng-show="got_properties">
+             <div layout="column" layout-align="right">
+                <i class="material-icons" ng-click="add_product($event)">add_circle_outline</i>
+            </div>
             <md-list>
                 <md-list-item class="md-2-line" ng-repeat="product in product_results">
                     {#                    <md-checkbox ng-model="item.done"></md-checkbox>#}
@@ -24,7 +27,7 @@
                         <table>
                             <tr>
                                 <td><h3>{$ product.name $}</h3></td>
-                                <td><i class="material-icons" ng-click="editProduct(product, $event)">mode_edit</i></td>
+                                <td><i class="material-icons" ng-click="editProduct(product, $event, true)">mode_edit</i></td>
                             </tr>
                         </table>
                     </div>

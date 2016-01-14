@@ -10,10 +10,11 @@ techApp.controller("EditAddProductController", ["$scope", "$http", "$mdDialog", 
     }, function (error) {
     })
 
-    $scope.query = {"filters": [], "category": 1}
+    $scope.query = {"filters": [], "category": 1};
+    $scope.got_properties = false;
 
     $scope.getProductForCategory = function (cat) {
-        $scope.query["category"] = cat._id
+        $scope.query["category"] = cat._id;
         $scope.selected_category = cat
         $http.post("/tech/rest/query/", {
             "query": $scope.query
@@ -25,7 +26,7 @@ techApp.controller("EditAddProductController", ["$scope", "$http", "$mdDialog", 
         $http.get("/tech/rest/" + cat._id + "/properties").then(function (result) {
             $scope.properties = result.data;
             $scope.property_names = []
-            $scope.properties.forEach(function(p){
+            $scope.properties.forEach(function (p) {
                 $scope.property_names.push(p["property_name"])
             });
             $scope.got_properties = true;
@@ -34,14 +35,14 @@ techApp.controller("EditAddProductController", ["$scope", "$http", "$mdDialog", 
         });
     }
 
-    $scope.editProduct = function (product, ev) {
+    $scope.editProduct = function (product, ev, edit) {
         var prod_properties = []
-        product.parameters.forEach(function(p) {
+        product.parameters.forEach(function (p) {
             prod_properties.push(p["property_name"]);
         })
-        jQuery.grep($scope.property_names, function(el) {
-            if(jQuery.inArray(el, prod_properties) == -1) {
-                product.parameters.push({"param_name" : el, "param_value" : ""})
+        jQuery.grep($scope.property_names, function (el) {
+            if (jQuery.inArray(el, prod_properties) == -1) {
+                product.parameters.push({"param_name": el, "param_value": ""})
             }
         })
         $mdDialog.show({
@@ -51,7 +52,8 @@ techApp.controller("EditAddProductController", ["$scope", "$http", "$mdDialog", 
                 clickOutsideToClose: true,
                 targetEvent: ev,
                 locals: {
-                    product: product
+                    product: product,
+                    edit : edit
                 }
             })
             .then(function (answer) {
@@ -60,8 +62,9 @@ techApp.controller("EditAddProductController", ["$scope", "$http", "$mdDialog", 
                 $scope.status = 'You cancelled the dialog.';
             });
     }
-    function EditProductDialogController($scope, $mdDialog, product) {
+    function EditProductDialogController($scope, $mdDialog, product, edit) {
         $scope.product = product;
+        $scope.edit = edit
         $scope.hide = function () {
             $mdDialog.hide();
         };
@@ -78,5 +81,13 @@ techApp.controller("EditAddProductController", ["$scope", "$http", "$mdDialog", 
         }
     }
 
+    $scope.add_product = function(ev) {
+        var product = {"name" : "", "description" : "", "parameters" : [] }
+        $scope.property_names.forEach(function(e){
+            product.parameters.push({"param_name" : e, "param_value" : ""});
+        })
+        $scope.editProduct(product, ev, false)
+
+    }
 
 }]);
