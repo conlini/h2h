@@ -28,7 +28,7 @@ def load():
     :return:
     """
     # TODO use django's app load hooks to load this cache
-    global loaded
+    global loaded, __products
     if not loaded:
         print("pre-loading data")
         for cat in Category.objects.all():

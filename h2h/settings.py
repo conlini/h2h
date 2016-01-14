@@ -16,7 +16,6 @@ import logging.config as log_conf
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
@@ -26,10 +25,9 @@ SECRET_KEY = os.environ.get("SECRET.KEY", "abcd1234")
 # SECURITY WARNING: don't run with debug turned on in production!
 debug_val = os.environ.get("DEBUG.ENABLED", "true")
 
-DEBUG = False
+DEBUG = True if debug_val == "true" else False
 
 ALLOWED_HOSTS = ["*"]
-
 
 # Application definition
 
@@ -57,12 +55,13 @@ ROOT_URLCONF = 'h2h.urls'
 
 WSGI_APPLICATION = 'h2h.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
 
 _SQLLITE = {'default': {'ENGINE': 'django.db.backends.sqlite3',
-                        'NAME': os.environ.get("SQLLITE.DB.PATH", os.path.join(BASE_DIR, 'db.sqlite3')), }}
+                        'NAME': os.environ.get("SQLLITE.DB.PATH",
+                                               os.path.join(BASE_DIR,
+                                                            'db.sqlite3')),}}
 
 _POSTGRE = {
     'default': {
@@ -102,7 +101,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
@@ -116,13 +114,7 @@ TEMPLATE_DIRS = (
 STATIC_ROOT = os.path.join(BASE_DIR, "static_root")
 
 LOGGING_CONFIG = None
-LOGGING = {"version" : 1, "disable_existing_loggers" : False}
+LOGGING = {"version": 1, "disable_existing_loggers": False}
 __LOG_CONFIG = os.path.join(BASE_DIR, "conf", "logging.conf")
 
-
 log_conf.fileConfig(__LOG_CONFIG)
-
-import logging
-logger = logging.getLogger("tech")
-logger.info("Debuglevel {}".format(DEBUG))
-print(logging.Logger.manager.loggerDict)
