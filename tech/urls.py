@@ -7,6 +7,7 @@ urlpatterns = [
     # BEGIN PAGE RENDER URLS
     url(r'^$', home),
     url(r'^properties/edit$' , edit_properties),
+    url(r'^product/edit$', edit_add_product),
     # END PAGE RENDER URS
 
     # BEGIN REST END POINTS

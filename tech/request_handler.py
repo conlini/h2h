@@ -36,7 +36,12 @@ def handle_query_request_internal(query):
     """
     # TODO need to look at server side filtering of data
     repo.load()
-    __all_items = [item for item in repo.products().values()]
+    category = query["category"]
+    if category == 0:
+        # we load all the items
+        __all_items = [item for item in repo.products().values()]
+    else:
+        __all_items = [item for item in repo.products().values() if item.category_id == category]
     # hack, seems to listify the queryset object allowing for filtering
     len(__all_items)
     for f in query['filters']:

@@ -1,0 +1,42 @@
+{% extends "tech/base.html" %}
+
+{% block main %}
+    <div layout="column" layout-sm="column" ng-controller="EditAddProductController">
+        <div>
+            <md-menu md-offset="0 40">
+                <!-- Trigger element is a md-button with an icon -->
+                <md-button ng-click="$mdOpenMenu($event)" class="md-raised" aria-label="Open sample menu">
+
+                    {$ selected_category.name $}
+                </md-button>
+                <md-menu-content>
+                    <md-menu-item ng-repeat="cat in categories">
+                        <md-button ng-click="getProductForCategory(cat)">{$ cat.name $}</md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+        </div>
+        <div id="products_div">
+            <md-list>
+                <md-list-item class="md-2-line" ng-repeat="product in product_results">
+                    {#                    <md-checkbox ng-model="item.done"></md-checkbox>#}
+                    <div class="md-list-item-text">
+                        <table>
+                            <tr>
+                                <td><h3>{$ product.name $}</h3></td>
+                                <td><i class="material-icons" ng-click="editProduct(product)">mode_edit</i></td>
+                            </tr>
+                        </table>
+
+
+
+                    </div>
+                </md-list-item>
+            </md-list>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}

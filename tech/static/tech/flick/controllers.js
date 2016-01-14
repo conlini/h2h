@@ -1,7 +1,7 @@
 techApp.controller('FilterController', ['$scope', "$http", '$document', '$mdDialog',function($scope, $http, $document, $mdDialog) {
     // fetch the filters on load of the page. We init the query and allow filters to be appended as is. 
     $scope.query = {
-        "category": "cat1",
+        "category": 0,
         "filters": []
     };
     $scope.visited_filters = {}
@@ -49,7 +49,7 @@ techApp.controller('FilterController', ['$scope', "$http", '$document', '$mdDial
                 $scope.query["filters"].push(o)
                 $scope.visited_filters[key] = o
             }
-            o[key] = [$scope.filters[key].selMin, $scope.filters[key].selMax];
+            o[key] = [Number($scope.filters[key].selMin), Number($scope.filters[key].selMax)];
         }
         // invoke the query api over here to get the filtered
         $http.post("/tech/rest/query/", {
