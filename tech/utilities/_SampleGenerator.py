@@ -94,4 +94,4 @@ if __name__ == "__main__":
     # fake.seed(1234)
     # create 10 items, increase for more
     for _ in range(30):
-        print fake.tech_data()
+        print(fake.tech_data())

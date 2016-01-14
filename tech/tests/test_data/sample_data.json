@@ -3,22 +3,22 @@
     "id": 1,
     "name": "item1",
     "category": "cat2",
-    "properties": [
+    "parameters": [
       {
-        "prop_name": "type",
-        "prop_value": "db"
+        "param_name": "type",
+        "param_value": "db"
       },
       {
-        "prop_name": "read speed",
-        "prop_value": "123"
+        "param_name": "read speed",
+        "param_value": "123"
       },
       {
-        "prop_name": "open source",
-        "prop_value": "true"
+        "param_name": "open source",
+        "param_value": "true"
       },
       {
-        "prop_name": "cat2 property",
-        "prop_value": "cat2"
+        "param_name": "cat2 property",
+        "param_value": "cat2"
       }
     ]
   },
@@ -26,18 +26,18 @@
     "id": 2,
     "name": "item2",
     "category": "cat1",
-    "properties": [
+    "parameters": [
       {
-        "prop_name": "type",
-        "prop_value": "search"
+        "param_name": "type",
+        "param_value": "search"
       },
       {
-        "prop_name": "read speed",
-        "prop_value": "555"
+        "param_name": "read speed",
+        "param_value": "555"
       },
       {
-        "prop_name": "open source",
-        "prop_value": "true"
+        "param_name": "open source",
+        "param_value": "true"
       }
     ]
   },
@@ -45,18 +45,18 @@
     "id": 3,
     "name": "item3",
     "category": "cat3",
-    "properties": [
+    "parameters": [
       {
-        "prop_name": "type",
-        "prop_value": "programming language"
+        "param_name": "type",
+        "param_value": "programming language"
       },
       {
-        "prop_name": "read speed",
-        "prop_value": "234"
+        "param_name": "read speed",
+        "param_value": "234"
       },
       {
-        "prop_name": "open source",
-        "prop_value": "false"
+        "param_name": "open source",
+        "param_value": "false"
       }
     ]
   },
@@ -64,18 +64,18 @@
     "id": 4,
     "name": "item4",
     "category": "cat1",
-    "properties": [
+    "parameters": [
       {
-        "prop_name": "type",
-        "prop_value": "db"
+        "param_name": "type",
+        "param_value": "db"
       },
       {
-        "prop_name": "read speed",
-        "prop_value": "1"
+        "param_name": "read speed",
+        "param_value": "1"
       },
       {
-        "prop_name": "open source",
-        "prop_value": "true"
+        "param_name": "open source",
+        "param_value": "true"
       }
     ]
   },
@@ -83,18 +83,18 @@
     "id": 5,
     "name": "item5",
     "category": "cat2",
-    "properties": [
+    "parameters": [
       {
-        "prop_name": "type",
-        "prop_value": "infra"
+        "param_name": "type",
+        "param_value": "infra"
       },
       {
-        "prop_name": "read speed",
-        "prop_value": "999"
+        "param_name": "read speed",
+        "param_value": "999"
       },
       {
-        "prop_name": "open source",
-        "prop_value": "false"
+        "param_name": "open source",
+        "param_value": "false"
       }
     ]
   }
