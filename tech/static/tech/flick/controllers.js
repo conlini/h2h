@@ -107,17 +107,33 @@ techApp.controller('FilterController', ['$scope', "$http", '$document', '$mdDial
         });
         // the presetnR
         $scope.presentResults = true;
-        var template = '<md-dialog aria-label="Comparison">'+
-                    '<md-toolbar><div class="md-toolbar-tools"><h2>Comparison</h2>'+
-                    '<span flex></span><md-button class="md-icon-button" ng-click="cancel()">'+
-                    '<md-icon md-font-set="material-icons"> done </md-icon> '+
-                    '</md-button></div></md-toolbar>'+
-                    '<md-dialog-content style="max-width:800px;max-height:810px;">'+
-                    '<table class="md-table table-striped table-hover">'+
-                    '<thead><tr><th ng-repeat="val in headers">{$val$}</th></tr></thead>'+
-                    '<tbody><tr ng-repeat="(param, values) in items">'+
-                    '<td>{$param$}</td><td ng-repeat="v in values">{$(v) || \'-\'$}</td>'+
-                    '</tr></tbody></table></md-dialog-content></md-dialog>';
+        var template = '<md-dialog aria-label="Comparison">' +
+                            '<md-toolbar>' +
+                                '<div class="md-toolbar-tools">' +
+                                    '<h2>Comparison</h2>' +
+                                    '<span flex></span>' +
+                                    '<md-button class="md-icon-button" ng-click="cancel()">' +
+                                        '<md-icon md-font-set="material-icons"> done </md-icon> ' +
+                                    '</md-button>' +
+                                '</div>' +
+                            '</md-toolbar>' +
+                            '<md-dialog-content style="max-width:800px;max-height:810px;">' +
+                                '<table class="md-table table-striped table-hover">' +
+                                    '<thead>' +
+                                        '<tr>' +
+                                            '<th ng-repeat="val in headers">{$val$}</th>' +
+                                        '</tr>' +
+                                    '</thead>' +
+                                    '<tbody>' +
+                                        '<tr ng-repeat="(param, values) in items">' +
+                                            '<td>{$param$}</td>' +
+                                            '<td ng-repeat="v in values">{$(v) || \'-\'$}</td>' +
+                                        '</tr>' +
+                                    '</tbody>' +
+                                '</table>' +
+                            '</md-dialog-content>' +
+                        '</md-dialog>';
+
         $mdDialog.show({
           controller: DialogController,
           template: template,
