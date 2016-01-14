@@ -53,7 +53,8 @@ techApp.controller("EditAddProductController", ["$scope", "$http", "$mdDialog", 
                 targetEvent: ev,
                 locals: {
                     product: product,
-                    edit : edit
+                    edit : edit,
+                    category : $scope.selected_category
                 }
             })
             .then(function (answer) {
@@ -62,7 +63,7 @@ techApp.controller("EditAddProductController", ["$scope", "$http", "$mdDialog", 
                 $scope.status = 'You cancelled the dialog.';
             });
     }
-    function EditProductDialogController($scope, $mdDialog, product, edit) {
+    function EditProductDialogController($scope, $mdDialog, $http, product, edit, category) {
         $scope.product = product;
         $scope.edit = edit
         $scope.hide = function () {
@@ -76,7 +77,9 @@ techApp.controller("EditAddProductController", ["$scope", "$http", "$mdDialog", 
         }
 
         $scope.save_product = function (product) {
-            console.log(product);
+            product["category"] = category.name
+            var data = [product]
+            $http.post("/tech/rest/items/save/", data)
             $mdDialog.hide();
         }
     }

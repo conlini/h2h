@@ -6,13 +6,13 @@ from faker.providers import BaseProvider
 
 
 class TechDataProvider(BaseProvider):
-    base = '"name" : "{{att_name}}", "category" : "{{ cat_name }}", "properties" : '
+    base = '"name" : "{{att_name}}", "category" : "{{ cat_name }}", "parameters" : '
 
     # bunch of pattersn for the Item properties. These are randomly chosed per item
-    property_patterns = ['{"prop_name" : "{{prop_name_number}}" , "prop_value" :  "{{prop_value_number}}"}',
-                         '{"prop_name" : "{{prop_name_flag}}" , "prop_value" :  "{{prop_value_flag}}"}',
+    property_patterns = ['{"param_name" : "{{param_name_number}}" , "param_value" :  "{{param_value_number}}"}',
+                         '{"param_name" : "{{param_name_flag}}" , "param_value" :  "{{param_value_flag}}"}',
 
-                         '{"prop_name" : "{{prop_name_simple}}" , "prop_value" :  "{{prop_value_simple}}"}']
+                         '{"param_name" : "{{param_name_simple}}" , "param_value" :  "{{param_value_simple}}"}']
 
 
 
@@ -21,16 +21,16 @@ class TechDataProvider(BaseProvider):
                  "java", "ruby", "spring", "scala", "mysql", "postgresql", "couchbase", "hadoop", "ELK", "splunk"]
 
     # A set of properties for techs that have number based values. Values are a random generated number
-    prop_name_numbers = ["write speed", "read speed", "released"]
+    param_name_numbers = ["write speed", "read speed", "released"]
 
     # A set of properties for techs that have flag based values
-    prop_name_flags = ["distributed", "open source", "active dev", "support community"]
-    prop_value_flags = ["True", "False"]
+    param_name_flags = ["distributed", "open source", "active dev", "support community"]
+    param_value_flags = ["True", "False"]
 
     # A set of properties for tech that are strings. The _value_simples are the set of values that can be chosen
-    prop_name_simples = ["type", ]
-    # Values that can be permuted against the prop_name_simples
-    prop_value_simples = ["db", "search", "programming language", "cloud infra", "in-memory solution", "log analysis"]
+    param_name_simples = ["type", ]
+    # Values that can be permuted against the param_name_simples
+    param_value_simples = ["db", "search", "programming language", "cloud infra", "in-memory solution", "log analysis"]
 
     cat_names = ["cat1", "cat2", "cat3"]
 
@@ -50,30 +50,30 @@ class TechDataProvider(BaseProvider):
         return cls.random_element(cls.att_names)
 
     @classmethod
-    def prop_name_simple(cls):
-        return cls.random_element(cls.prop_name_simples)
+    def param_name_simple(cls):
+        return cls.random_element(cls.param_name_simples)
 
     @classmethod
-    def prop_value_simple(cls):
-        return cls.random_element(cls.prop_value_simples)
+    def param_value_simple(cls):
+        return cls.random_element(cls.param_value_simples)
 
     @classmethod
-    def prop_name_number(cls):
-       return cls.random_element(cls.prop_name_numbers)
+    def param_name_number(cls):
+       return cls.random_element(cls.param_name_numbers)
 
     @classmethod
-    def prop_value_number(cls):
+    def param_value_number(cls):
         # range for any number properties from which a random number will be created
         # the parser expects all values to be strings, so wrapping around str
         return str(random.randint(500, 5000))
 
     @classmethod
-    def prop_name_flag(cls):
-        return cls.random_element(cls.prop_name_flags)
+    def param_name_flag(cls):
+        return cls.random_element(cls.param_name_flags)
 
     @classmethod
-    def prop_value_flag(cls):
-        return cls.random_element(cls.prop_value_flags)
+    def param_value_flag(cls):
+        return cls.random_element(cls.param_value_flags)
 
     @classmethod
     def cat_name(cls):
