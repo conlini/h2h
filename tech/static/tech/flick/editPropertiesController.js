@@ -14,6 +14,7 @@ techApp.controller("EditPropertiesController", ["$scope", "$http", "$mdDialog", 
         $http.get("/tech/rest/" + cat._id + "/properties").then(function (result) {
             $scope.properties = result.data;
             $scope.got_properties = true;
+            $scope.original_prop_length = $scope.properties.length
         }, function (error) {
         });
     }
@@ -38,4 +39,5 @@ techApp.controller("EditPropertiesController", ["$scope", "$http", "$mdDialog", 
         }
         $scope.edit_mode = false;
     }
+
 }]);

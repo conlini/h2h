@@ -33,12 +33,12 @@
                             <input type="text" ng-model="prop.property_name" >
                         </md-input-container>
                     </td>
-                    <td><p ng-hide="edit_mode">{$ prop.property_type $}</p>
-                        <div ng-show="edit_mode">
+                    <td><p ng-hide="edit_mode && ($index <= original_prop_length -1)">{$ prop.property_type $}</p>
+                        <div ng-show="edit_mode && ($index > original_prop_length - 1)">
                             <select ng-model="prop.property_type">
-                                <option value="BOOL">Boolean</option>
-                                <option value="INT">Number</option>
-                                <option value="STRING">Text</option>
+                                <option value="BOOL">BOOL</option>
+                                <option value="INT">INT</option>
+                                <option value="STRING">STRING</option>
                             </select>
                         </div>
                     </td>
