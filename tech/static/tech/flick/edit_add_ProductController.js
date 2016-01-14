@@ -21,53 +21,44 @@ techApp.controller("EditAddProductController", ["$scope", "$http", "$mdDialog", 
             $scope.product_results = response.data.filteredData;
             console.log($scope.product_results.length)
         }, function (error) {
-        })
+        });
+        $http.get("/tech/rest/" + cat._id + "/properties").then(function (result) {
+            $scope.properties = result.data;
+            $scope.property_names = []
+            $scope.properties.forEach(function(p){
+                $scope.property_names.push(p["property_name"])
+            });
+            $scope.got_properties = true;
+            $scope.original_prop_length = $scope.properties.length
+        }, function (error) {
+        });
     }
 
-    var edit_product_template = '<md-dialog aria-label="Comparison">' +
-                        '<md-toolbar>' +
-                            '<div class="md-toolbar-tools">' +
-                                '<h2>Edit {$ product.name $}</h2>' +
-                                '<span flex></span>' +
-                                '<md-button class="md-icon-button" ng-click="save_product(product)">' +
-                                    '<md-icon md-font-set="material-icons"> done </md-icon> ' +
-                                '</md-button>' +
-                            '</div>' +
-                        '</md-toolbar>' +
-                        '<md-dialog-content style="max-width:800px;max-height:810px;">' +
-                            '<table class="md-table table-striped table-hover">' +
-                                '<thead>' +
-                                    '<tr>' +
-                                        '<th ng-repeat="val in headers">{$val$}</th>' +
-                                    '</tr>' +
-                                '</thead>' +
-                                '<tbody>' +
-                                    '<tr ng-repeat="param in product.parameters">' +
-                                        '<td>{$param.param_name$}</td>' +
-                                         // @RahulMamgain: How do I bind the value of this text field to override the value of param.param_value??
-                                        '<td><input type="text" value="{$param.param_value$}"></td>' +
-                                    '</tr>' +
-                                '</tbody>' +
-                            '</table>' +
-                        '</md-dialog-content>' +
-                    '</md-dialog>';
-
     $scope.editProduct = function (product, ev) {
-        $mdDialog.show({
-          controller: EditProductDialogController,
-          template: edit_product_template,
-          parent: angular.element(document.body),
-          clickOutsideToClose:true,
-          targetEvent: ev,
-          locals: {
-            product: product
+        var prod_properties = []
+        product.parameters.forEach(function(p) {
+            prod_properties.push(p["property_name"]);
+        })
+        jQuery.grep($scope.property_names, function(el) {
+            if(jQuery.inArray(el, prod_properties) == -1) {
+                product.parameters.push({"param_name" : el, "param_value" : ""})
             }
         })
-        .then(function(answer) {
-          $scope.status = 'You said the information was "' + answer + '".';
-        }, function() {
-          $scope.status = 'You cancelled the dialog.';
-        });
+        $mdDialog.show({
+                controller: EditProductDialogController,
+                template: edit_product_template,
+                parent: angular.element(document.body),
+                clickOutsideToClose: true,
+                targetEvent: ev,
+                locals: {
+                    product: product
+                }
+            })
+            .then(function (answer) {
+                $scope.status = 'You said the information was "' + answer + '".';
+            }, function () {
+                $scope.status = 'You cancelled the dialog.';
+            });
     }
     function EditProductDialogController($scope, $mdDialog, product) {
         $scope.product = product;
