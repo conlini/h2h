@@ -8,7 +8,7 @@ from tech.models import *
 # the property_vals dict holds all the possible values of a given property.
 # This allows us to do a fast look up to see if a given proprety name already has the same value ingested
 
-# Cached ParamProperties, values and categories
+# Cached ParamProperties, values, products and  categories
 property_vals = defaultdict(list)
 __param_properties = {}
 __ROOT = {"name": "root", "children": []}
@@ -16,6 +16,7 @@ category_hierarchy = __ROOT
 cat_rev_lookup = {"root": __ROOT}
 __cat_id_mapping = {}
 __cat_prop_mapping = defaultdict(list)
+__products = {}
 
 loaded = False
 
@@ -56,6 +57,8 @@ def load():
             __cat_prop_mapping[cat_id].append(param_property)
             for vals in param_property.paramvalue_set.all():
                 property_vals[param_name].append(vals.param_value)
+
+        __products = {item.name: item for item in Item.objects.all()}
 
         loaded = True
 
@@ -202,3 +205,8 @@ def ingest_bulk(data):
             if param_property.param_type == "INT" :
                 ip.param_value_as_int = int(param_value)
             ip.save()
+        __products[name] = item
+
+
+def products():
+    return __products
