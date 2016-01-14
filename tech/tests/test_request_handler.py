@@ -53,7 +53,7 @@ class QueryHandling(BaseTests):
 
     def test_bool_positive_filter(self):
         answer = handle_query_request_internal(
-            {"filters": [{"open source": [True]}], "category": "cat1"})
+            {"filters": [{"open source": [True]}], "category": 0})
         self.assertEqual(3, len(answer["filteredData"]))
         self.assertEqual(sorted(["item1", "item2", "item4"]),
                          sorted([answer['filteredData'][0]["name"],
@@ -62,7 +62,7 @@ class QueryHandling(BaseTests):
 
     def test_range_filter(self):
         answer = handle_query_request_internal(
-            {"filters": [{"read speed": [100, 300]}], "category": "cat1"})
+            {"filters": [{"read speed": [100, 300]}], "category": 0})
         self.assertEqual(2, len(answer["filteredData"]))
         self.assertEqual(sorted(["item1", "item3"]),
                          sorted([answer['filteredData'][0]["name"],
@@ -71,18 +71,18 @@ class QueryHandling(BaseTests):
 
     def test_bool_negative_filter(self):
         answer = handle_query_request_internal(
-            {"filters": [{"open source": [False]}], "category": "cat1"})
+            {"filters": [{"open source": [False]}], "category": 0})
         self.assertEqual(5, len(answer["filteredData"]))
 
     def test_out_of_range_filter(self):
         answer = handle_query_request_internal(
-            {"filters": [{"read speed": [1000, 3000]}], "category": "cat1"})
+            {"filters": [{"read speed": [1000, 3000]}], "category": 0})
         self.assertEqual(0, len(answer["filteredData"]))
 
     def test_multiple_filters(self):
         answer = handle_query_request_internal(
             {"filters": [{"read speed": [100, 200]},
-                         {"open source": [True]}], "category": "cat1"})
+                         {"open source": [True]}], "category": 0})
         self.assertEqual(1, len(answer["filteredData"]))
         self.assertEqual(["item1"],
                          [answer['filteredData'][0]["name"]
