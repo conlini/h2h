@@ -38,7 +38,7 @@ techApp.controller("EditAddProductController", ["$scope", "$http", "$mdDialog", 
     $scope.editProduct = function (product, ev, edit) {
         var prod_properties = []
         product.parameters.forEach(function (p) {
-            prod_properties.push(p["property_name"]);
+            prod_properties.push(p["param_name"]);
         })
         jQuery.grep($scope.property_names, function (el) {
             if (jQuery.inArray(el, prod_properties) == -1) {
@@ -53,8 +53,9 @@ techApp.controller("EditAddProductController", ["$scope", "$http", "$mdDialog", 
                 targetEvent: ev,
                 locals: {
                     product: product,
-                    edit : edit,
-                    category : $scope.selected_category
+                    edit: edit,
+                    category: $scope.selected_category,
+                    category_products : $scope.product_results
                 }
             })
             .then(function (answer) {
@@ -63,9 +64,10 @@ techApp.controller("EditAddProductController", ["$scope", "$http", "$mdDialog", 
                 $scope.status = 'You cancelled the dialog.';
             });
     }
-    function EditProductDialogController($scope, $mdDialog, $http, product, edit, category) {
+    function EditProductDialogController($scope, $mdDialog, $http, product, edit, category, category_products) {
         $scope.product = product;
-        $scope.edit = edit
+        $scope.edit = edit;
+        $scope.cat_products = category_products;
         $scope.hide = function () {
             $mdDialog.hide();
         };
@@ -81,16 +83,25 @@ techApp.controller("EditAddProductController", ["$scope", "$http", "$mdDialog", 
             var data = [product]
             $http.post("/tech/rest/items/save/", data)
             $mdDialog.hide();
+            $scope.cat_products.push(product)
         }
     }
 
-    $scope.add_product = function(ev) {
-        var product = {"name" : "", "description" : "", "parameters" : [] }
-        $scope.property_names.forEach(function(e){
-            product.parameters.push({"param_name" : e, "param_value" : ""});
+    $scope.add_product = function (ev) {
+        var product = {"name": "", "description": "", "parameters": []}
+        $scope.property_names.forEach(function (e) {
+            product.parameters.push({"param_name": e, "param_value": ""});
         })
         $scope.editProduct(product, ev, false)
 
     }
 
+    $scope.$watch('selected.id', function (id) {
+        //delete $scope.selected.value;
+        angular.forEach($scope.data, function (attr) {
+            if (attr.id === id) {
+                $scope.selectedAttr = attr;
+            }
+        });
+    });
 }]);

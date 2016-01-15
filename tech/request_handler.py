@@ -73,14 +73,19 @@ def get_filters_and_ranges(cat_id=None):
             param_type = param_property.param_type
             if param_type == "INT":
                 # this should just have 2 values, min and max
-                if name in filters:
-                    if int(val) > filters[name][1]:
-                        filters[name][1] = int(val)
-                    if int(val) < filters[name][0]:
-                        filters[name][0] = int(val)
-                else:
-                    filters[name].extend([sys.maxsize, -1])
-                filter_meta[name] = "INT"
+                try:
+                    if name in filters:
+                        if int(val) > filters[name][1]:
+                            filters[name][1] = int(val)
+                        if int(val) < filters[name][0]:
+                            filters[name][0] = int(val)
+                    else:
+                        filters[name].extend([sys.maxsize, -1])
+                    filter_meta[name] = "INT"
+                except ValueError as v:
+                    import logging
+                    logger = logging.getLogger("h2h")
+                    logger.error("Error converting value {} to INT".format(val))
             elif param_type == "BOOL":
                 filters[name] = [True, False]
                 filter_meta[name] = "BOOL"

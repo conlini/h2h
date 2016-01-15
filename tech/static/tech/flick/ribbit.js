@@ -16,7 +16,7 @@ var edit_product_template = '<md-dialog aria-label="Comparison">' +
                         '<md-toolbar>' +
                             '<div class="md-toolbar-tools">' +
                                 '<h2 ng-show="edit">Edit {$ product.name $}</h2>' +
-                                '<h2 ng-show="!edit">Add <input id="product_name" value="{$product.name$}a"></h2>' +
+                                '<h2 ng-show="!edit">Add <input id="product_name" value="{$product.name$}" ng-model="product.name"></h2>' +
                                 '<span flex></span>' +
                                 '<md-button class="md-icon-button" ng-click="save_product(product)">' +
                                     '<md-icon md-font-set="material-icons"> done </md-icon> ' +
@@ -35,7 +35,7 @@ var edit_product_template = '<md-dialog aria-label="Comparison">' +
                                     '<tr ng-repeat="param in product.parameters">' +
                                         '<td>{$param.param_name$}</td>' +
                                          // @RahulMamgain: How do I bind the value of this text field to override the value of param.param_value??
-                                        '<td><input type="text" value="{$param.param_value$}"></td>' +
+                                        '<td><input type="text" name="data-attr" ng-model="param.param_value" value="{$param.param_value$}"></td>' +
                                     '</tr>' +
                                 '</tbody>' +
                             '</table>' +

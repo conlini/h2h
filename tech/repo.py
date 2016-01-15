@@ -1,6 +1,7 @@
 from collections import defaultdict
 
 from tech.models import *
+import logging
 
 
 # load all the current ParamProperty and ParamValues in to memory
@@ -17,6 +18,7 @@ cat_rev_lookup = {"root": __ROOT}
 __cat_id_mapping = {}
 __cat_prop_mapping = defaultdict(list)
 __products = {}
+__LOGGER = logging.getLogger("h2h")
 
 loaded = False
 
@@ -184,28 +186,31 @@ def get_param_properties(cat_id=None):
     return __param_properties
 
 def ingest_bulk(data):
-    for d in data:
-        category_name = d['category']
-        category = Category.objects.get_or_create(category_name=category_name)[0]
-        name = d['name']
-        item = Item.objects.get_or_create(name=name, category=category)[0]
-        for prop in d['parameters']:
-            param_name = prop['param_name']
-            param_value = prop['param_value']
-            if param_value:
-                if not param_name in get_param_properties(category.id):
-                    param_property = create_property_for_value(param_name, param_value, category)
-                else :
-                    param_property = get_param_properties()[param_name]
-                add_value_to_property(param_value, param_property)
-                ip = find_item_param(item, param_name)
-                if not ip:
-                    ip = ItemParam(param_name=param_name, param_property=param_property, item=item)
-                ip.param_value = param_value
-                if param_property.param_type == "INT" :
-                    ip.param_value_as_int = int(param_value)
-                ip.save()
-        __products[name] = item
+    try:
+        for d in data:
+            category_name = d['category']
+            category = Category.objects.get_or_create(category_name=category_name)[0]
+            name = d['name']
+            item = Item.objects.get_or_create(name=name, category=category)[0]
+            for prop in d['parameters']:
+                param_name = prop['param_name']
+                param_value = prop['param_value']
+                if param_value:
+                    if not param_name in get_param_properties(category.id):
+                        param_property = create_property_for_value(param_name, param_value, category)
+                    else :
+                        param_property = get_param_properties()[param_name]
+                    add_value_to_property(param_value, param_property)
+                    ip = find_item_param(item, param_name)
+                    if not ip:
+                        ip = ItemParam(param_name=param_name, param_property=param_property, item=item)
+                    ip.param_value = param_value
+                    if param_property.param_type == "INT" :
+                        ip.param_value_as_int = int(param_value)
+                    ip.save()
+            __products[name] = item
+    except Exception as e:
+        __LOGGER.error(e)
 
 
 def products():
