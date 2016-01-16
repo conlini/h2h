@@ -6,7 +6,7 @@ ENV SQLLITE.DB.PATH="/usr/src/db/db.sqlite3"
 RUN mkdir -p /usr/src/db
 
 ENV SECRET.KEY="dnqzt6_=ccf&q#24wgzk4y3mbj*48on^hr#pha+hzq-w9n&du_"
-ENV DEBUG.ENABLED="false"
+ENV DEBUG.ENABLED="true"
 ENV DB.NAME=""
 ENV DB.HOST=""
 ENV DB.PORT=""
@@ -18,13 +18,9 @@ ENV LOG.LEVEL="ERROR"
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-# Temp place code so we can run migrations
-RUN mkdir -p  /temp
+
 COPY . /usr/src/app
 RUN pip3 install --no-cache-dir -r /usr/src/app/requirements.txt
-
-RUN python manage.py /usr/src/app/static_root
-RUN python manage.py collectstatic --clear --noinput
 
 EXPOSE 8000
 CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
